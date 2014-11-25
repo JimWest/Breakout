@@ -3,16 +3,12 @@
 #include <GLFW/glfw3.h>
 
 
-Rect::Rect(void)
+Rect::Rect(void):Entity()
 {
-	this->SetOrigin(*new Vector2);
-	this->SetEndPoint(*new Vector2);	
 }
 
-Rect::Rect(Vector2 origin, Vector2 endPoint)
-{
-	this->SetOrigin(origin);
-	this->SetEndPoint(endPoint);			
+Rect::Rect(Vector2 origin, Vector2 endPoint):Entity(origin, endPoint)
+{	
 }
 
 Rect::~Rect(void)
