@@ -39,8 +39,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\Jim\Documents\Visual Studio 2010\Projects\Breakout\Breakout\glfw-3.0.3.bin.WIN32\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\Jim\Documents\Visual Studio 2010\Projects\Breakout\Breakout\glfw-3.0.3.bin.WIN32\lib-msvc100;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\Jim\Documents\Visual Studio 2010\Projects\Breakout\Breakout\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\Jim\Documents\Visual Studio 2010\Projects\Breakout\Breakout\lib-msvc100;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -78,15 +78,16 @@
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Ball.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="GameWindow.h" />
     <ClInclude Include="Rect.h" />
-    <ClInclude Include="resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Vector2.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Ball.cpp" />
     <ClCompile Include="Breakout.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="GameWindow.cpp" />

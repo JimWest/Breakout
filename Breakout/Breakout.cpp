@@ -3,16 +3,17 @@
 #include "GameWindow.h"
 #include "Entity.h"
 #include "Rect.h"
+#include "Ball.h"
 
 #define RES_WIDTH	800
 #define RES_HEIGHT	600
- 
+
 #define BOTTOM_BORDER	25
 
-#define EDGE_LEFT	0
-#define EDGE_RIGHT	1
-#define EDGE_TOP	2
-#define EDGE_BOTTOM	3
+#define BORDER_LEFT	0
+#define BORDER_RIGHT	1
+#define BORDER_TOP	2
+#define BORDER_BOTTOM	3
 
 #define BORDER_RES_WIDTH	100
 
@@ -21,42 +22,123 @@
 #define PLAYER_X	PLAYER_WIDTH/2 - PLAYER_WIDTH 
 #define PLAYER_Y	-0.9f
 
+#define BALL_HEIGHT	0.05f
+#define BALL_WIDTH	0.05f
+#define BALL_X	BALL_WIDTH / 2 - BALL_WIDTH
+#define BALL_Y	PLAYER_Y + 0.1f
+#define BALL_FORCE_X	1
+#define BALL_FORCE_Y	1
+
+Rect* player;
+Ball* ball;
+Rect* borders [4];
+Rect* collisionObjects[99];
+
+
+static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+	{
+		glfwSetWindowShouldClose(window, GL_TRUE);
+	} 
+
+	if (key == GLFW_KEY_LEFT && (action == GLFW_PRESS || action == GLFW_REPEAT))
+	{
+		Vector2 origin = player->GetOrigin();
+		Vector2 newOrigin = player->GetOrigin() + Vector2(-0.1f, 0);
+
+		if (newOrigin.x < borders[BORDER_LEFT]->GetOrigin().x)
+		{
+			newOrigin.x = borders[BORDER_LEFT]->GetOrigin().x;
+		}
+
+		player->SetOrigin(newOrigin);
+	}
+
+	if (key == GLFW_KEY_RIGHT && (action == GLFW_PRESS || action == GLFW_REPEAT))
+	{
+		Vector2 origin = player->GetOrigin();
+		Vector2 newOrigin = player->GetOrigin() + Vector2(0.1f, 0);
+
+		if (newOrigin.x + player->GetWidth() > borders[BORDER_RIGHT]->GetOrigin().x)
+		{
+			newOrigin.x = borders[BORDER_RIGHT]->GetOrigin().x - player->GetWidth() ;
+		}
+
+		player->SetOrigin(newOrigin);		
+	}
+
+
+
+}
+
+
 int main(void)
 {		
 	// Init main OpenGL Window
 	GameWindow *gameWindow = new GameWindow(RES_WIDTH, RES_HEIGHT);
+	glfwSetKeyCallback(gameWindow->getWindow(), key_callback);
 
 	// Init all game objects
 
-	Entity* edges [4];
-	edges[EDGE_TOP] = new Entity(Vector2(0,-BORDER_RES_WIDTH), Vector2(RES_WIDTH, BORDER_RES_WIDTH));
-	edges[EDGE_LEFT] = new Entity(Vector2(-BORDER_RES_WIDTH,0), Vector2(BORDER_RES_WIDTH, RES_HEIGHT));
-	edges[EDGE_BOTTOM] = new Entity(Vector2(0,RES_HEIGHT-BOTTOM_BORDER), Vector2(RES_WIDTH, BORDER_RES_WIDTH));
-	edges[EDGE_RIGHT] = new Entity(Vector2(RES_WIDTH,0), Vector2(BORDER_RES_WIDTH, RES_HEIGHT));
+	borders[BORDER_TOP] = new Rect(Vector2(-1.4, 0.8f), 2.8f, 0.01f);
+	borders[BORDER_LEFT] = new Rect(Vector2(-1.35, -0.95f), 0.01f, 2.8f);
+	borders[BORDER_BOTTOM] = new Rect(Vector2(-1.4, -1),2.8f, 0.01f);
+	borders[BORDER_RIGHT] = new Rect(Vector2(1.35, 0.95f), 0.01f, -2.8f);
 
-	Rect *player = new Rect(Vector2(PLAYER_X, PLAYER_Y), Vector2(PLAYER_X + PLAYER_WIDTH, PLAYER_Y + PLAYER_HEIGHT));
-	//Rect *ball = new Rect(Vector2( 0.5f, 0.2f),  Vector2( 0.6f, 0.1f));
+	player = new Rect(Vector2(PLAYER_X, PLAYER_Y), PLAYER_WIDTH, PLAYER_HEIGHT);		
+	ball = new Ball(Vector2( BALL_X, BALL_Y), BALL_WIDTH, BALL_HEIGHT, Vector2(BALL_FORCE_X, BALL_FORCE_Y));
 
-	/*
-	currentBall = new Ball(397.0,VERT_RES-BOTTOM_BORDER-50);
-	currentBall->setTexture(textures[TEXTURE_BALL], 0.0, 0.0, 1.0, 1.0);
-
-	currentPaddle = new Paddle(330.0, VERT_RES-BOTTOM_BORDER-20, 150.0);
-	currentPaddle->setTexture(textures[TEXTURE_PADDLE], 0.0, 0.0, 1.0, 1.0);
-	*/
-
+	double currentFrame = glfwGetTime();
+	double lastFrame = currentFrame;
+	double deltaTime;
 	// GameLoop
 	while (gameWindow->getRunning())
 	{
+		currentFrame = glfwGetTime();
+		deltaTime = currentFrame - lastFrame;
+		lastFrame = currentFrame;
+
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		player->Update();
-		player->Render();
+		ball->Update(deltaTime);
+		Vector2 newBallOrigin = ball->GetOrigin();
 
-		//ball->Update();
-		//ball->Render();
+		if(newBallOrigin.y - ball->GetHeight() < player->GetOrigin().y)
+		{
+			newBallOrigin.y = player->GetOrigin().y + ball->GetHeight();
+			ball->BounceOff(false);
+		}
 
-		glEnd();
+		if (newBallOrigin.x < borders[BORDER_LEFT]->GetOrigin().x)
+		{
+			newBallOrigin.x = borders[BORDER_LEFT]->GetOrigin().x;
+			ball->BounceOff(true);
+		} else if (newBallOrigin.x + ball->GetWidth() > borders[BORDER_RIGHT]->GetOrigin().x)
+		{
+			newBallOrigin.x = borders[BORDER_RIGHT]->GetOrigin().x - ball->GetWidth();
+			ball->BounceOff(true);
+		}
+
+		if (newBallOrigin.y +  ball->GetHeight() > borders[BORDER_TOP]->GetOrigin().y)
+		{
+			newBallOrigin.y = borders[BORDER_TOP]->GetOrigin().y - ball->GetHeight();
+			ball->BounceOff(false);
+		}
+		else if (newBallOrigin.y < borders[BORDER_BOTTOM]->GetOrigin().y)
+		{
+			newBallOrigin.y = borders[BORDER_BOTTOM]->GetOrigin().y;
+			ball->BounceOff(false);
+		}
+		
+
+		ball->SetOrigin(newBallOrigin);
+
+		borders[BORDER_TOP]->Render();
+		borders[BORDER_BOTTOM]->Render();
+		ball->Render();
+		player->Render();		
+
 		glfwSwapBuffers(gameWindow->getWindow());
 		glfwPollEvents();
 	}
@@ -65,13 +147,13 @@ int main(void)
 	// delete all gameobjects etc
 	delete gameWindow;
 
-	delete edges[EDGE_TOP];
-	delete edges[EDGE_LEFT];
-	delete edges[EDGE_BOTTOM];
-	delete edges[EDGE_RIGHT];
+	delete borders[BORDER_TOP];
+	delete borders[BORDER_LEFT];
+	delete borders[BORDER_BOTTOM];
+	delete borders[BORDER_RIGHT];
 
 	delete player;	
-	//delete ball;
+	delete ball;
 
 	return 0;
 }

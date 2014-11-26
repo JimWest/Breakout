@@ -19,3 +19,27 @@ Vector2::~Vector2(void)
 }
 
 
+Vector2 &Vector2::operator+(Vector2 summand)
+{
+	this->x+= summand.x;
+	this->y+= summand.y;
+    return *this;
+}
+
+Vector2 &Vector2::operator-(Vector2 summand)
+{
+	this->x-= summand.x;
+	this->y-= summand.y;
+    return *this;
+}
+
+Vector2 &Vector2::operator*(double multiplikator)
+{
+	this->x*= multiplikator;
+	this->y*= multiplikator;
+    return *this;
+}
+
+
+
+
