@@ -31,10 +31,12 @@ GameWindow::GameWindow(int width, int height)
 	glfwInit();  
 	glfwSetErrorCallback(error_callback);
 
+	
+
 	mRunning = true;
 
 	/* Create a windowed mode window and its OpenGL context */
-	mWindow = glfwCreateWindow(width, height, "Hello World", NULL, NULL);
+	mWindow = glfwCreateWindow(width, height, "Breakout", NULL, NULL);
 
 	if (!mWindow)
 	{

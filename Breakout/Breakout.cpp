@@ -1,14 +1,15 @@
 #include "stdafx.h"
 #include "GameWindow.h"
 #include "GameWindow.h"
-#include "Entity.h"
-#include "Rect.h"
+#include "StaticBox.h"
+#include "DynamicBox.h"
+#include "StaticBox.h"
 #include "Ball.h"
 
 #define RES_WIDTH	800
 #define RES_HEIGHT	600
 
-#define BOTTOM_BORDER	25
+#define COUNTDOWN_START	3
 
 #define BORDER_LEFT	0
 #define BORDER_RIGHT	1
@@ -29,11 +30,22 @@
 #define BALL_FORCE_X	1
 #define BALL_FORCE_Y	1
 
-Rect* player;
+StaticBox* player;
 Ball* ball;
-Rect* borders [4];
-Rect* collisionObjects[99];
+StaticBox* borders [4];
+StaticBox* collisionObjects[99];
+double countDownEnd;
 
+void resetGame()
+{	
+	player->setOrigin(Vector2(PLAYER_X, PLAYER_Y));
+	ball->setOrigin(Vector2( BALL_X, BALL_Y));
+	ball->setForce(BALL_FORCE_X, BALL_FORCE_Y);
+
+	double currentFrame = glfwGetTime();
+	countDownEnd = glfwGetTime() + COUNTDOWN_START;
+
+}
 
 static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
@@ -42,33 +54,98 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 		glfwSetWindowShouldClose(window, GL_TRUE);
 	} 
 
-	if (key == GLFW_KEY_LEFT && (action == GLFW_PRESS || action == GLFW_REPEAT))
+	if (key == GLFW_KEY_R && action == GLFW_PRESS)
 	{
-		Vector2 origin = player->GetOrigin();
-		Vector2 newOrigin = player->GetOrigin() + Vector2(-0.1f, 0);
+		resetGame();
+	} 
 
-		if (newOrigin.x < borders[BORDER_LEFT]->GetOrigin().x)
+	if (glfwGetTime() >= countDownEnd)
+	{
+
+		if (key == GLFW_KEY_LEFT && (action == GLFW_PRESS || action == GLFW_REPEAT))
 		{
-			newOrigin.x = borders[BORDER_LEFT]->GetOrigin().x;
+			Vector2 origin = player->getOrigin();
+			Vector2 newOrigin = player->getOrigin() + Vector2(-0.1f, 0);
+
+			if (newOrigin.x < borders[BORDER_LEFT]->getOrigin().x)
+			{
+				newOrigin.x = borders[BORDER_LEFT]->getOrigin().x;
+			}
+
+			player->setOrigin(newOrigin);
 		}
 
-		player->SetOrigin(newOrigin);
-	}
-
-	if (key == GLFW_KEY_RIGHT && (action == GLFW_PRESS || action == GLFW_REPEAT))
-	{
-		Vector2 origin = player->GetOrigin();
-		Vector2 newOrigin = player->GetOrigin() + Vector2(0.1f, 0);
-
-		if (newOrigin.x + player->GetWidth() > borders[BORDER_RIGHT]->GetOrigin().x)
+		if (key == GLFW_KEY_RIGHT && (action == GLFW_PRESS || action == GLFW_REPEAT))
 		{
-			newOrigin.x = borders[BORDER_RIGHT]->GetOrigin().x - player->GetWidth() ;
+			Vector2 origin = player->getOrigin();
+			Vector2 newOrigin = player->getOrigin() + Vector2(0.1f, 0);
+
+			if (newOrigin.x + player->getWidth() > borders[BORDER_RIGHT]->getOrigin().x)
+			{
+				newOrigin.x = borders[BORDER_RIGHT]->getOrigin().x - player->getWidth() ;
+			}
+
+			player->setOrigin(newOrigin);		
 		}
 
-		player->SetOrigin(newOrigin);		
+	}
+
+}
+
+
+
+void checkCollisions()
+{
+	/*Vector2 newBallOrigin = ball->getOrigin();
+
+	// player - ball collision
+	if(newBallOrigin.y - ball->getHeight() < player->getOrigin().y 
+		&& (newBallOrigin.x >= player->getOrigin().x && newBallOrigin.x + ball->getWidth() <= player->getOrigin().x + player->getWidth()))
+	{
+
+		Collision col = ball->getCollision(player);
+		newBallOrigin.y = player->getOrigin().y + ball->getHeight();
+
+		ball->bounceOff(col);
+		ball->setOrigin(newBallOrigin);
+	}
+
+	*/
+
+	Collision playerCol = ball->getCollision(player);
+	if (playerCol.colided)
+	{
+		ball->bounceOff(playerCol);
+	}
+	
+	if (ball->getOrigin().x + ball->getWidth() >= borders[BORDER_RIGHT]->getOrigin().x)
+	{
+		int a = 1;
 	}
 
 
+	// wall collision
+	
+	for (int i = 0; i<3; i++)
+	{
+		Collision col = ball->getCollision(borders[i]);
+		if (col.colided)
+		{
+			if (i == BORDER_BOTTOM)
+			{
+				resetGame();
+				return;
+			}
+			else
+			{
+				ball->bounceOff(col);
+				break;
+			}
+			
+		}
+
+	}
+	
 
 }
 
@@ -81,17 +158,25 @@ int main(void)
 
 	// Init all game objects
 
-	borders[BORDER_TOP] = new Rect(Vector2(-1.4, 0.8f), 2.8f, 0.01f);
-	borders[BORDER_LEFT] = new Rect(Vector2(-1.35, -0.95f), 0.01f, 2.8f);
-	borders[BORDER_BOTTOM] = new Rect(Vector2(-1.4, -1),2.8f, 0.01f);
-	borders[BORDER_RIGHT] = new Rect(Vector2(1.35, 0.95f), 0.01f, -2.8f);
+	borders[BORDER_TOP] = new StaticBox(Vector2(-1.4, 0.8f), 2.8f, 0.01f);
+	borders[BORDER_LEFT] = new StaticBox(Vector2(-1.35, -0.95f), 0.01f, 2.8f);
+	borders[BORDER_BOTTOM] = new StaticBox(Vector2(-1.4, -1),2.8f, 0.01f);
+	borders[BORDER_RIGHT] = new StaticBox(Vector2(1.30, 0.95f), 2, -2.8f);
 
-	player = new Rect(Vector2(PLAYER_X, PLAYER_Y), PLAYER_WIDTH, PLAYER_HEIGHT);		
-	ball = new Ball(Vector2( BALL_X, BALL_Y), BALL_WIDTH, BALL_HEIGHT, Vector2(BALL_FORCE_X, BALL_FORCE_Y));
+	player = new StaticBox(Vector2(PLAYER_X, PLAYER_Y), PLAYER_WIDTH, PLAYER_HEIGHT);		
+
+	collisionObjects[0] = player;
+
+	ball = new Ball(Vector2( BALL_X, BALL_Y), BALL_WIDTH, BALL_HEIGHT);
+	ball->setForce(Vector2(BALL_FORCE_X, BALL_FORCE_Y));	
 
 	double currentFrame = glfwGetTime();
 	double lastFrame = currentFrame;
 	double deltaTime;
+	countDownEnd = currentFrame + COUNTDOWN_START;
+	
+	Vector2 center = player->getCenter();
+
 	// GameLoop
 	while (gameWindow->getRunning())
 	{
@@ -101,48 +186,23 @@ int main(void)
 
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		ball->Update(deltaTime);
-		Vector2 newBallOrigin = ball->GetOrigin();
-
-		if(newBallOrigin.y - ball->GetHeight() < player->GetOrigin().y)
+		if (currentFrame >= countDownEnd)
 		{
-			newBallOrigin.y = player->GetOrigin().y + ball->GetHeight();
-			ball->BounceOff(false);
-		}
+			ball->Update(deltaTime);
+			checkCollisions();
+		}		
 
-		if (newBallOrigin.x < borders[BORDER_LEFT]->GetOrigin().x)
-		{
-			newBallOrigin.x = borders[BORDER_LEFT]->GetOrigin().x;
-			ball->BounceOff(true);
-		} else if (newBallOrigin.x + ball->GetWidth() > borders[BORDER_RIGHT]->GetOrigin().x)
-		{
-			newBallOrigin.x = borders[BORDER_RIGHT]->GetOrigin().x - ball->GetWidth();
-			ball->BounceOff(true);
-		}
+		borders[BORDER_TOP]->render();
+		borders[BORDER_BOTTOM]->render();
+		borders[BORDER_LEFT]->render();
+		borders[BORDER_RIGHT]->render();
 
-		if (newBallOrigin.y +  ball->GetHeight() > borders[BORDER_TOP]->GetOrigin().y)
-		{
-			newBallOrigin.y = borders[BORDER_TOP]->GetOrigin().y - ball->GetHeight();
-			ball->BounceOff(false);
-		}
-		else if (newBallOrigin.y < borders[BORDER_BOTTOM]->GetOrigin().y)
-		{
-			newBallOrigin.y = borders[BORDER_BOTTOM]->GetOrigin().y;
-			ball->BounceOff(false);
-		}
-		
-
-		ball->SetOrigin(newBallOrigin);
-
-		borders[BORDER_TOP]->Render();
-		borders[BORDER_BOTTOM]->Render();
-		ball->Render();
-		player->Render();		
+		ball->render();
+		player->render();		
 
 		glfwSwapBuffers(gameWindow->getWindow());
 		glfwPollEvents();
 	}
-
 
 	// delete all gameobjects etc
 	delete gameWindow;

@@ -3,28 +3,34 @@
 #include <GLFW/glfw3.h>
 
 
-Vector2 Entity::GetOrigin()
+Vector2 Entity::getOrigin()
 {
 	return this->mOrigin;
 }
 
-void Entity::SetOrigin(Vector2 newOrigin)
+void Entity::setOrigin(Vector2 newOrigin)
 {
 	this->mOrigin = newOrigin;
 }
 
 Entity::Entity(void)
 {
-	this->SetOrigin(*new Vector2);
+	this->setOrigin(*new Vector2);
 }
 
 Entity::Entity(Vector2 origin)
 {
-	this->SetOrigin(origin);	
+	this->setOrigin(origin);	
 }
 
 Entity::~Entity(void)
 {
+}
+
+void Entity::move(Vector2 moveVector)
+{
+	//Vector2 newOrigin = this->getOrigin() + moveVector;
+	this->setOrigin(this->getOrigin() + moveVector);
 }
 
 

@@ -40,6 +40,12 @@ Vector2 &Vector2::operator*(double multiplikator)
     return *this;
 }
 
+Vector2 &Vector2::operator/(double multiplikator)
+{
+	this->x/= multiplikator;
+	this->y/= multiplikator;
+    return *this;
+}
 
 
 

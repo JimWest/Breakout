@@ -14,6 +14,7 @@ public:
 	Vector2 &operator-(Vector2);
 
 	Vector2 &operator*(double);
+	Vector2 &operator/(double);
 
 };
 
