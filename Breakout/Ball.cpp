@@ -23,33 +23,27 @@ void Ball::bounceOff(Collision col)
 	Vector2 oldForce = this->getForce();
 	Vector2 newBallOrigin = this->getOrigin();
 
-	if (col.xAxis)
+	if (col.orientation == TOP)
 	{
-		this->setForce(oldForce.x * -1, oldForce.y);		
-
-		if (col.collisionPoint.x > this->getOrigin().x)
-		{
-			newBallOrigin.x = col.collisionPoint.x - this->getWidth();
-		}
-		else
-		{
-			newBallOrigin.x = col.collisionPoint.x;
-		}
-
+		this->setForce(oldForce.x, oldForce.y  * -1);
+		newBallOrigin.y = col.collisionPoint.y - this->getHeight();
 	}
-	else
+	else if (col.orientation == RIGHT)
 	{
-		this->setForce(oldForce.x, oldForce.y * -1);
-
-		if (col.collisionPoint.y > this->getOrigin().y)
-		{
-			newBallOrigin.y = col.collisionPoint.y - this->getHeight();
-		}
-		else
-		{
-			newBallOrigin.y = col.collisionPoint.y;
-		}
+		this->setForce(oldForce.x * -1, oldForce.y);
+		newBallOrigin.x = col.collisionPoint.x - this->getWidth();
 	}
+	else if (col.orientation == BOTTOM)
+	{
+		this->setForce(oldForce.x, oldForce.y  * -1);
+		newBallOrigin.y = col.collisionPoint.y;
+	}
+	else if (col.orientation == LEFT)
+	{
+		this->setForce(oldForce.x * -1, oldForce.y);
+		newBallOrigin.x = col.collisionPoint.x;
+	}
+	
 
 	this->setOrigin(newBallOrigin);
 	

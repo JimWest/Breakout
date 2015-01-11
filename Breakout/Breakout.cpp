@@ -161,7 +161,7 @@ int main(void)
 	borders[BORDER_TOP] = new StaticBox(Vector2(-1.4, 0.8f), 2.8f, 0.01f);
 	borders[BORDER_LEFT] = new StaticBox(Vector2(-1.35, -0.95f), 0.01f, 2.8f);
 	borders[BORDER_BOTTOM] = new StaticBox(Vector2(-1.4, -1),2.8f, 0.01f);
-	borders[BORDER_RIGHT] = new StaticBox(Vector2(1.30, 0.95f), 2, -2.8f);
+	borders[BORDER_RIGHT] = new StaticBox(Vector2(1.30, -0.95f), 2, 2.8f);
 
 	player = new StaticBox(Vector2(PLAYER_X, PLAYER_Y), PLAYER_WIDTH, PLAYER_HEIGHT);		
 
@@ -188,7 +188,7 @@ int main(void)
 
 		if (currentFrame >= countDownEnd)
 		{
-			ball->Update(deltaTime);
+			ball->Update(0.0001f);
 			checkCollisions();
 		}		
 

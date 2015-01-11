@@ -96,40 +96,27 @@ Collision StaticBox::getCollision(StaticBox* otherStaticBox)
 		{
 			// Objects collided
 			col.colided = true;
-			Vector2 deltaCenter = otherStaticBox->getCenter() - this->getCenter();
-			int a = 1;
 
-			if ((origin.y + this->getHeight()) < (otherOrigin.y + otherStaticBox->getHeight()) && (origin.y > otherOrigin.y))
+			if (origin.y <= otherOrigin.y)
 			{
-				// y-collision
-				col.xAxis = false;
-				if (deltaCenter.x > 0 )
-				{
-					// right
-					col.collisionPoint = Vector2(origin.x +  (this->getWidth() / 2), origin.y);
-				}
-				else
-				{
-					// left
-					col.collisionPoint = Vector2(origin.x -  (this->getWidth() / 2), origin.y);
-				}
-
-			} else 
+				col.orientation = TOP;
+				col.collisionPoint = Vector2(origin.x, origin.y + (this->getHeight()));
+			} 
+			else if (origin.x <= otherOrigin.x)
 			{
-				// x-collision
-				col.xAxis = true;
-				if (deltaCenter.y > 0 )
-				{
-					// below
-					col.collisionPoint = Vector2(origin.x, origin.y - (this->getHeight() / 2));
-				}
-				else
-				{
-					// above
-					col.collisionPoint = Vector2(origin.x, origin.y + (this->getHeight() / 2));
-				}
+				col.orientation = RIGHT;
+				col.collisionPoint = Vector2(origin.x +  (this->getWidth()), origin.y);
 			}
-
+			else if (origin.y >= otherOrigin.y)
+			{
+				col.orientation = BOTTOM;
+				col.collisionPoint = Vector2(origin.x, origin.y);
+			}
+			else
+			{
+				col.orientation = LEFT;
+				col.collisionPoint = Vector2(origin.x, origin.y);
+			}		
 
 		}
 	}

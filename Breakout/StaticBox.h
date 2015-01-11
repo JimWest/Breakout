@@ -1,9 +1,11 @@
 #pragma once
 #include "Vector2.h"
 
+enum Orientation  {TOP, RIGHT, BOTTOM, LEFT};
+
 struct Collision {
   bool colided;
-  bool xAxis;
+  Orientation orientation;
   Vector2 collisionPoint;
 } ;
 
