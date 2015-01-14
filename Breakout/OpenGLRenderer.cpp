@@ -1,12 +1,11 @@
 #include "StdAfx.h"
 #include "OpenGLRenderer.h"
 
-#include <ft2build.h>
-#include FT_FREETYPE_H
+#include "Freetype.h"
 
-#define GLFW_INCLUDE_NONE
-#define GLFW_INCLUDE_GLCOREARB
 
+// This holds all the information for the font that we are going to create.
+freetype::font_data our_font;	
 
 OpenGLRenderer::OpenGLRenderer(void)
 {
@@ -16,6 +15,7 @@ OpenGLRenderer::OpenGLRenderer(void)
 OpenGLRenderer::~OpenGLRenderer(void)
 {
 }
+
 
 static void error_callback(int error, const char* description)
 {
@@ -84,6 +84,18 @@ void OpenGLRenderer::postRender()
 {
 	glfwSwapBuffers(mWindow);
 	glfwPollEvents();
+}
+
+void OpenGLRenderer::renderString(const char *filename, const char *string, const size_t length, int pixel_size)
+{
+	glColor3ub(0xff,0,0);
+
+	glPushMatrix();
+	glLoadIdentity();
+
+
+
+	glPopMatrix();
 }
 
 void OpenGLRenderer::closeWindow()

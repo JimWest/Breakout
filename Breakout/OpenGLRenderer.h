@@ -18,6 +18,7 @@ public:
 	virtual void preRender();
 	virtual void renderObject(StaticBox* box);
 	virtual void postRender();
+	virtual void renderString(const char *filename, const char *string, const size_t length, int pixel_size);
 	virtual void closeWindow();
 	virtual double getTime();
 	virtual bool getRunning();

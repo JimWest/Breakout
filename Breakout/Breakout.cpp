@@ -49,8 +49,8 @@ void resetGame()
 	ball->setOrigin(Vector2( BALL_X, BALL_Y));
 	ball->setVelocity(Vector2(BALL_velocity_X, BALL_velocity_Y));
 
-	double currentFrame = glfwGetTime();
-	countDownEnd = glfwGetTime() + COUNTDOWN_START;
+	double currentFrame = renderer->getTime();
+	countDownEnd = renderer->getTime() + COUNTDOWN_START;
 
 }
 
@@ -107,12 +107,7 @@ int main(void)
 	renderer = new OpenGLRenderer();
 	renderer->createWindow(RES_WIDTH, RES_HEIGHT);
 
-	// Init main OpenGL Window
-	//GameWindow *gameWindow = new GameWindow(RES_WIDTH, RES_HEIGHT);
-	//GLFWwindow* glfwWindow = gameWindow->getWindow();
-
 	// Init all game objects
-
 	borders[BORDER_TOP] = new StaticBox(Vector2(-1.4f, 0.8f), 2.8f, 0.01f);
 	borders[BORDER_LEFT] = new StaticBox(Vector2(-1.35f, -0.95f), 0.01f, 2.8f);
 	borders[BORDER_BOTTOM] = new StaticBox(Vector2(-1.35f, -0.95f),2.8f, 0.01f);
