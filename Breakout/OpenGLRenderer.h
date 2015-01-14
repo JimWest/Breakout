@@ -15,6 +15,9 @@ public:
 	~OpenGLRenderer(void);
 
 	virtual void createWindow(int width, int height);
+	virtual void preRender();
+	virtual void renderObject(StaticBox* box);
+	virtual void postRender();
 	virtual void closeWindow();
 	virtual double getTime();
 	virtual bool getRunning();

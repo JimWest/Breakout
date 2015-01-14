@@ -28,6 +28,9 @@ public:
 	float getWidth() const;
 	void setWidth(float width);
 
+	Color getColor() const;
+	void setColor(Color newColor);
+
 	Vector2 getCenter() const;
 
 	StaticBox(void);
@@ -35,7 +38,6 @@ public:
 	StaticBox(Vector2 origin, float width, float height, Color c);
 
 	virtual ~StaticBox(void);	
-	virtual void render();
 };
 
 

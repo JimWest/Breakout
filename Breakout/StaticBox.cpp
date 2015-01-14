@@ -46,6 +46,16 @@ Vector2 StaticBox::getCenter() const
 	return (origin + Vector2(origin.x + this->getWidth(), origin.y + this->getHeight())) / 2;
 }
 
+Color  StaticBox::getColor() const
+{
+	return this->mColor;
+}
+	
+void  StaticBox::setColor(Color newColor)
+{
+	this->mColor = newColor;
+}
+
 StaticBox::StaticBox(Vector2 origin, float width, float height)
 {
 	this->mOrigin = origin;	
@@ -64,24 +74,6 @@ StaticBox::StaticBox(Vector2 origin, float width, float height, Color c)
 
 StaticBox::~StaticBox(void)
 {
-}
-
-
-void StaticBox::render()
-{
-	glPushMatrix();
-	glTranslatef(this->getOrigin().x, this->getOrigin().y, 0);
-
-	glColor3f(mColor.getR(), mColor.getG(), mColor.getB()); // (0.5, 0, 1) is half red and full blue, giving dark purple.
-
-	glBegin(GL_POLYGON);	
-		glVertex2f(0.0f, 0.0f);
-		glVertex2f(mWidth, 0.0f);
-		glVertex2f(mWidth, mHeight);
-		glVertex2f(0.0f, mHeight);
-	glEnd( );
-
-	glPopMatrix();
 }
 
 

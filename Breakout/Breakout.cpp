@@ -1,6 +1,4 @@
 #include "stdafx.h"
-#include "GameWindow.h"
-#include "GameWindow.h"
 #include "StaticBox.h"
 #include "DynamicBox.h"
 #include "StaticBox.h"
@@ -8,13 +6,6 @@
 
 #include <iostream>
 #include <string>
-
-#include <ft2build.h>
-#include FT_FREETYPE_H
-
-#define GLFW_INCLUDE_NONE
-#define GLFW_INCLUDE_GLCOREARB
-#include <GLFW/glfw3.h>
 
 #include "IRenderer.h"
 #include "OpenGLRenderer.h"
@@ -44,13 +35,12 @@
 #define BALL_velocity_Y	1
 
 IRenderer* renderer;
-
 DynamicBox* player;
 Ball* ball;
 StaticBox* borders [4];
 StaticBox* collisionObjects[99];
+StaticBox* renderObject[99];
 double countDownEnd;
-
 
 
 void resetGame()
@@ -114,7 +104,6 @@ void checkCollisions()
 
 int main(void)
 {		
-
 	renderer = new OpenGLRenderer();
 	renderer->createWindow(RES_WIDTH, RES_HEIGHT);
 
@@ -188,17 +177,15 @@ int main(void)
 			checkCollisions();
 		}		
 
-		borders[BORDER_TOP]->render();
-		borders[BORDER_BOTTOM]->render();
-		borders[BORDER_LEFT]->render();
-		borders[BORDER_RIGHT]->render();
+		renderer->preRender();
 
-		ball->render();
-		player->render();
+		renderer->renderObject(borders[BORDER_TOP]);
+		renderer->renderObject(ball);
+		renderer->renderObject(player);
+
+		renderer->postRender();
 		
-	
-		glfwSwapBuffers(gameWindow->getWindow());
-		glfwPollEvents();
+
 	}
 
 	// delete all gameobjects etc
