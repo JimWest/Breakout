@@ -17,30 +17,27 @@ Ball::~Ball(void)
 
 void Ball::bounceOff(Collision col)
 {
-	//if (col.collisionPoint
-	//newBallOrigin.x = borders[BORDER_LEFT]->getOrigin().x;
-	
-	Vector2 oldForce = this->getForce();
+	Vector2 oldvelocity = this->getVelocity();
 	Vector2 newBallOrigin = this->getOrigin();
 
 	if (col.orientation == TOP)
 	{
-		this->setForce(oldForce.x, oldForce.y  * -1);
+		this->setVelocity(Vector2(oldvelocity.x, oldvelocity.y  * -1));
 		newBallOrigin.y = col.collisionPoint.y - this->getHeight();
 	}
 	else if (col.orientation == RIGHT)
 	{
-		this->setForce(oldForce.x * -1, oldForce.y);
+		this->setVelocity(Vector2(oldvelocity.x * -1, oldvelocity.y));
 		newBallOrigin.x = col.collisionPoint.x - this->getWidth();
 	}
 	else if (col.orientation == BOTTOM)
 	{
-		this->setForce(oldForce.x, oldForce.y  * -1);
+		this->setVelocity(Vector2(oldvelocity.x, oldvelocity.y  * -1));
 		newBallOrigin.y = col.collisionPoint.y;
 	}
 	else if (col.orientation == LEFT)
 	{
-		this->setForce(oldForce.x * -1, oldForce.y);
+		this->setVelocity(Vector2(oldvelocity.x * -1, oldvelocity.y));
 		newBallOrigin.x = col.collisionPoint.x;
 	}
 	

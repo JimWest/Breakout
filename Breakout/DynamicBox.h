@@ -6,23 +6,21 @@ class DynamicBox:
 
 {
 protected:
-	Vector2 mForce;
-	Vector2 mFriction;
+	Vector2 mVelocity;
 
 public:
-	Vector2 getForce() const;
-	void setForce(Vector2 force);
-	void setForce(float x, float y);
-
-	Vector2 getFritction() const;
-	void SetFriction(Vector2 force);
-	void SetFriction(float x, float y);
+	Vector2 getVelocity() const;
+	void setVelocity(Vector2 velocity);
 
 	DynamicBox(void);
 	DynamicBox(Vector2 origin, float width, float height);
+	DynamicBox(Vector2 origin, float width, float height, Color c);
+
 	~DynamicBox(void);
 
-	virtual void Update(double deltaTime);
+	virtual void Update(float deltaTime);
 	virtual void move(Vector2 moveVector);
+
+	virtual Collision getCollision(StaticBox* otherStaticBox);
 };
 

@@ -1,5 +1,6 @@
 #pragma once
 #include "Vector2.h"
+#include "Color.h"
 
 enum Orientation  {TOP, RIGHT, BOTTOM, LEFT};
 
@@ -14,6 +15,7 @@ class StaticBox
 
 protected:
 	Vector2 mOrigin;
+	Color mColor; 
 	float mHeight, mWidth;
 
 public:
@@ -30,9 +32,10 @@ public:
 
 	StaticBox(void);
 	StaticBox(Vector2 origin, float width, float height);
-	virtual ~StaticBox(void);
-	
+	StaticBox(Vector2 origin, float width, float height, Color c);
+
+	virtual ~StaticBox(void);	
 	virtual void render();
-	virtual Collision getCollision(StaticBox* otherStaticBox);
 };
+
 

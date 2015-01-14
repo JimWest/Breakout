@@ -30,7 +30,6 @@ GameWindow::GameWindow(int width, int height)
 	/* Initialize the library */
 	glfwInit();  
 	glfwSetErrorCallback(error_callback);
-
 	
 
 	mRunning = true;
@@ -48,6 +47,10 @@ GameWindow::GameWindow(int width, int height)
 	float ratio;
 	glfwGetFramebufferSize(mWindow, &width, &height);
 	ratio = width / (float) height;
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 	glViewport(0, 0, width, height);
 	glClear(GL_COLOR_BUFFER_BIT);
 	glMatrixMode(GL_PROJECTION);

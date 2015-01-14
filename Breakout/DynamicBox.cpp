@@ -3,37 +3,14 @@
 
 
 
-Vector2 DynamicBox::getForce() const
+Vector2 DynamicBox::getVelocity() const
 {
-	return this->mForce;
+	return this->mVelocity;
 }
 
-void DynamicBox::setForce(Vector2 force)
+void DynamicBox::setVelocity(Vector2 velocity)
 {	
-	mForce = force;
-}
-
-void DynamicBox::setForce(float x, float y)
-{
-	mForce.x = x;
-	mForce.y = y;
-}
-
-Vector2 DynamicBox::getFritction() const
-{
-	return this->mFriction;
-}
-
-void DynamicBox::SetFriction(Vector2 force)
-{	
-	mFriction.x = force.x;
-	mFriction.y = force.y;
-}
-
-void DynamicBox::SetFriction(float x, float y)
-{
-	mFriction.x = x;
-	mFriction.y = y;
+	mVelocity = velocity;
 }
 
 
@@ -46,6 +23,9 @@ DynamicBox::DynamicBox(Vector2 origin, float width, float height):StaticBox(orig
 {
 }
 
+DynamicBox::DynamicBox(Vector2 origin, float width, float height, Color c):StaticBox(origin, width, height, c)
+{
+}
 
 
 DynamicBox::~DynamicBox(void)
@@ -53,11 +33,11 @@ DynamicBox::~DynamicBox(void)
 }
 
 
-void DynamicBox::Update(double deltaTime)
+void DynamicBox::Update(float deltaTime)
 {
-	if (mForce.x != 0 || mForce.y != 0)
+	if (mVelocity.x != 0 || mVelocity.y != 0)
 	{		
-		this->move(this->getForce()* deltaTime);
+		this->move(this->getVelocity()* deltaTime);		
 	}
 }
 
@@ -65,5 +45,58 @@ void DynamicBox::move(Vector2 moveVector)
 {
 	//Vector2 newOrigin = this->getOrigin() + moveVector;
 	this->setOrigin(this->getOrigin() + moveVector);
+}
+
+// checks if the object collides with another given object
+Collision DynamicBox::getCollision(StaticBox* otherStaticBox)
+{
+	Collision col;	
+	col.colided = false;
+	//col.collisionPoint
+
+	Vector2 origin = this->getOrigin();
+	Vector2 otherOrigin = otherStaticBox->getOrigin();
+	float otherHeight = otherStaticBox->getHeight();
+	float otherWidth = otherStaticBox->getWidth();
+
+	// check xAxis 
+	if ((origin.x + this->getWidth() >= otherOrigin.x && origin.x <= otherOrigin.x + otherWidth) 
+		|| (origin.x <= otherOrigin.x + otherWidth && origin.x + this->getWidth() >= otherOrigin.x))
+	{
+		// check yAxis
+		if ((origin.y + this->getHeight() >= otherOrigin.y && origin.y  <= otherOrigin.y + otherHeight)
+			|| (origin.y <= otherOrigin.y + otherHeight && origin.y + this->getHeight() >= otherOrigin.y))
+		{
+			// Objects collided
+			col.colided = true;
+						
+
+			if (origin.y <= otherOrigin.y && mVelocity.y > 0)
+			{
+				col.orientation = TOP;
+				col.collisionPoint = Vector2(origin.x, origin.y + (this->getHeight()));
+			} 
+			else if (origin.x <= otherOrigin.x && mVelocity.x > 0)
+			{
+				col.orientation = RIGHT;
+				col.collisionPoint = Vector2(origin.x +  (this->getWidth()), origin.y);
+			}
+			else if (origin.x >= otherOrigin.x && mVelocity.x < 0)
+			{
+				col.orientation = LEFT;
+				col.collisionPoint = Vector2(origin.x, origin.y);
+			}
+			//else if (origin.y >= otherOrigin.y  && mVelocity.y < 0)
+			//{			
+			else
+			{
+				col.orientation = BOTTOM;
+				col.collisionPoint = Vector2(origin.x, origin.y);
+			}		
+
+		}
+	}
+
+	return col;
 }
 

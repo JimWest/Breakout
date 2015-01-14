@@ -48,9 +48,18 @@ Vector2 StaticBox::getCenter() const
 
 StaticBox::StaticBox(Vector2 origin, float width, float height)
 {
-	this->setOrigin(origin);	
+	this->mOrigin = origin;	
 	this->mHeight = height;
 	this->mWidth= width;
+	this->mColor = Color(1, 1, 1);
+}
+
+StaticBox::StaticBox(Vector2 origin, float width, float height, Color c)
+{
+	this->mOrigin = origin;		
+	this->mHeight = height;
+	this->mWidth= width;
+	this->mColor = c;
 }
 
 StaticBox::~StaticBox(void)
@@ -63,63 +72,16 @@ void StaticBox::render()
 	glPushMatrix();
 	glTranslatef(this->getOrigin().x, this->getOrigin().y, 0);
 
+	glColor3f(mColor.getR(), mColor.getG(), mColor.getB()); // (0.5, 0, 1) is half red and full blue, giving dark purple.
+
 	glBegin(GL_POLYGON);	
-	glVertex2f(0.0f, 0.0f);
-	glVertex2f(mWidth, 0.0f);
-	glVertex2f(mWidth, mHeight);
-	glVertex2f(0.0f, mHeight);
+		glVertex2f(0.0f, 0.0f);
+		glVertex2f(mWidth, 0.0f);
+		glVertex2f(mWidth, mHeight);
+		glVertex2f(0.0f, mHeight);
 	glEnd( );
 
 	glPopMatrix();
 }
 
 
-// checks if the object collides with another given object
-Collision StaticBox::getCollision(StaticBox* otherStaticBox)
-{
-	Collision col;	
-	col.colided = false;
-	//col.collisionPoint
-
-	Vector2 origin = this->getOrigin();
-	Vector2 otherOrigin = otherStaticBox->getOrigin();
-	float otherHeight = otherStaticBox->getHeight();
-	float otherWidth = otherStaticBox->getWidth();
-
-	// check xAxis 
-	if ((origin.x + this->getWidth() >= otherOrigin.x && origin.x <= otherOrigin.x + otherWidth) 
-		|| (origin.x <= otherOrigin.x + otherWidth && origin.x + this->getWidth() >= otherOrigin.x))
-	{
-		// check yAxis
-		if ((origin.y + this->getHeight() >= otherOrigin.y && origin.y  <= otherOrigin.y + otherHeight)
-			|| (origin.y <= otherOrigin.y + otherHeight && origin.y + this->getHeight() >= otherOrigin.y))
-		{
-			// Objects collided
-			col.colided = true;
-
-			if (origin.y <= otherOrigin.y)
-			{
-				col.orientation = TOP;
-				col.collisionPoint = Vector2(origin.x, origin.y + (this->getHeight()));
-			} 
-			else if (origin.x <= otherOrigin.x)
-			{
-				col.orientation = RIGHT;
-				col.collisionPoint = Vector2(origin.x +  (this->getWidth()), origin.y);
-			}
-			else if (origin.y >= otherOrigin.y)
-			{
-				col.orientation = BOTTOM;
-				col.collisionPoint = Vector2(origin.x, origin.y);
-			}
-			else
-			{
-				col.orientation = LEFT;
-				col.collisionPoint = Vector2(origin.x, origin.y);
-			}		
-
-		}
-	}
-
-	return col;
-}

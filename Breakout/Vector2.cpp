@@ -33,14 +33,14 @@ Vector2 &Vector2::operator-(Vector2 summand)
     return *this;
 }
 
-Vector2 &Vector2::operator*(double multiplikator)
+Vector2 &Vector2::operator*(float multiplikator)
 {
 	this->x*= multiplikator;
 	this->y*= multiplikator;
     return *this;
 }
 
-Vector2 &Vector2::operator/(double multiplikator)
+Vector2 &Vector2::operator/(float multiplikator)
 {
 	this->x/= multiplikator;
 	this->y/= multiplikator;

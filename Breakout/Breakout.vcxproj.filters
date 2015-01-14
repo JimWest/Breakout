@@ -41,6 +41,12 @@
     <ClInclude Include="MathUtility.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="Brick.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Color.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -65,6 +71,12 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="MathUtility.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Brick.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Color.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
