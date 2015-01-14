@@ -47,6 +47,12 @@
     <ClInclude Include="Color.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="IRenderer.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGLRenderer.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -77,6 +83,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Color.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenGLRenderer.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

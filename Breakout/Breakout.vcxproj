@@ -82,8 +82,10 @@
     <ClInclude Include="Brick.h" />
     <ClInclude Include="DynamicBox.h" />
     <ClInclude Include="GameWindow.h" />
+    <ClInclude Include="IRenderer.h" />
     <ClInclude Include="MathUtility.h" />
     <ClInclude Include="Color.h" />
+    <ClInclude Include="OpenGLRenderer.h" />
     <ClInclude Include="StaticBox.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="stdafx.h" />
@@ -98,6 +100,7 @@
     <ClCompile Include="GameWindow.cpp" />
     <ClCompile Include="MathUtility.cpp" />
     <ClCompile Include="Color.cpp" />
+    <ClCompile Include="OpenGLRenderer.cpp" />
     <ClCompile Include="StaticBox.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

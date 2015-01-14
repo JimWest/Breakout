@@ -16,6 +16,9 @@
 #define GLFW_INCLUDE_GLCOREARB
 #include <GLFW/glfw3.h>
 
+#include "IRenderer.h"
+#include "OpenGLRenderer.h"
+
 #define RES_WIDTH	800
 #define RES_HEIGHT	600
 
@@ -39,6 +42,8 @@
 #define BALL_Y	PLAYER_Y + 0.1f
 #define BALL_velocity_X	1
 #define BALL_velocity_Y	1
+
+IRenderer* renderer;
 
 DynamicBox* player;
 Ball* ball;
@@ -109,9 +114,13 @@ void checkCollisions()
 
 int main(void)
 {		
+
+	renderer = new OpenGLRenderer();
+	renderer->createWindow(RES_WIDTH, RES_HEIGHT);
+
 	// Init main OpenGL Window
-	GameWindow *gameWindow = new GameWindow(RES_WIDTH, RES_HEIGHT);
-	GLFWwindow* glfwWindow = gameWindow->getWindow();
+	//GameWindow *gameWindow = new GameWindow(RES_WIDTH, RES_HEIGHT);
+	//GLFWwindow* glfwWindow = gameWindow->getWindow();
 
 	// Init all game objects
 
@@ -127,7 +136,7 @@ int main(void)
 	ball = new Ball(Vector2( BALL_X, BALL_Y), BALL_WIDTH, BALL_HEIGHT);
 	ball->setVelocity(Vector2(BALL_velocity_X, BALL_velocity_Y));	
 
-	double currentFrame = glfwGetTime();
+	double currentFrame = renderer->getTime();
 	double lastFrame = currentFrame;
 	double deltaTime;
 	countDownEnd = currentFrame + COUNTDOWN_START;
@@ -135,9 +144,9 @@ int main(void)
 	Vector2 center = player->getCenter();
 
 	// GameLoop
-	while (gameWindow->getRunning())
+	while (renderer->getRunning())
 	{	
-		currentFrame = glfwGetTime();
+		currentFrame = renderer->getTime();
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
 
@@ -146,50 +155,31 @@ int main(void)
 		// reset player velocity so hes not moving all the time without keypress
 		player->setVelocity(Vector2(0.0f, 0.0f));
 
-		if (glfwGetKey(glfwWindow, GLFW_KEY_ESCAPE))
+		if (renderer->getKey(GLFW_KEY_ESCAPE))
 		{
-			glfwSetWindowShouldClose(glfwWindow, GL_TRUE);
+			renderer->closeWindow();
 		} 
 
 
-		if (glfwGetKey(glfwWindow, GLFW_KEY_R))
+		if (renderer->getKey(GLFW_KEY_R))
 		{
 			resetGame();
 		} 
 
-		if (glfwGetTime() >= countDownEnd)
+		if (currentFrame >= countDownEnd)
 		{
 
-			if (glfwGetKey(glfwWindow, GLFW_KEY_LEFT))
+			if (renderer->getKey(GLFW_KEY_LEFT))
 			{
 				player->setVelocity(Vector2(-2.0f, 0.0f));
 			}
 
-			if (glfwGetKey(glfwWindow, GLFW_KEY_RIGHT))
+			if (renderer->getKey(GLFW_KEY_RIGHT))
 			{
 				player->setVelocity(Vector2(2.0f, 0.0f));	
 			}
 
 		}
-
-		glClear(GL_COLOR_BUFFER_BIT);
-
-		/*
-		glBegin(GL_QUADS);
-            glColor3ub (0, 0, 255);
-            glVertex2d (-0.75, -0.75);
-            glVertex2d (-0.75, 0.75);
-            glColor3ub (255, 0, 0);
-            glVertex2d (0.75, 0.75) ;
-            glVertex2d (0.75, -0.75);
-        glEnd;
-		*/
-
-		//glEnable(GL_TEXTURE_2D);
-		//glColor3f(1.0f, 0.0f, 0.0f);
-	//glDisable(GL_TEXTURE_2D);
-
-
 
 		if (currentFrame >= countDownEnd)
 		{
@@ -212,7 +202,7 @@ int main(void)
 	}
 
 	// delete all gameobjects etc
-	delete gameWindow;
+	delete renderer;
 
 	delete borders[BORDER_TOP];
 	delete borders[BORDER_LEFT];
