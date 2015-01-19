@@ -9,6 +9,7 @@ class OpenGLRenderer :
 private:
 	bool mRunning;
 	GLFWwindow* mWindow;
+	int m_Width, m_Height;
 
 public:
 	OpenGLRenderer(void);

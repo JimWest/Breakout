@@ -81,7 +81,6 @@
     <ClInclude Include="Ball.h" />
     <ClInclude Include="Brick.h" />
     <ClInclude Include="DynamicBox.h" />
-    <ClInclude Include="Freetype.h" />
     <ClInclude Include="GameWindow.h" />
     <ClInclude Include="IRenderer.h" />
     <ClInclude Include="MathUtility.h" />
@@ -98,7 +97,6 @@
     <ClCompile Include="Breakout.cpp" />
     <ClCompile Include="Brick.cpp" />
     <ClCompile Include="DynamicBox.cpp" />
-    <ClCompile Include="Freetype.cpp" />
     <ClCompile Include="GameWindow.cpp" />
     <ClCompile Include="MathUtility.cpp" />
     <ClCompile Include="Color.cpp" />
