@@ -56,6 +56,9 @@
     <ClInclude Include="Breakout.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="OpenGLFont.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -89,6 +92,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Main.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenGLFont.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

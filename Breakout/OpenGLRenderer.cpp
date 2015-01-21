@@ -4,11 +4,15 @@
 
 OpenGLRenderer::OpenGLRenderer(void)
 {
+	const char *file = "arial.font";
+	font = new OpenGLFont(file);
 }
 
 
 OpenGLRenderer::~OpenGLRenderer(void)
 {
+	delete font;
+	glfwTerminate();
 }
 
 
@@ -100,14 +104,9 @@ void OpenGLRenderer::postRender()
 }
 
 
-void OpenGLRenderer::renderString(const char *filename, const char *string, const size_t length, int pixel_size)
+void OpenGLRenderer::renderString(const std::string& str, float x, float y)
 {	
-	int n = 1;
-	glPushMatrix();
-	glColor3ub(0xff,0,0);
-
-
-	glPopMatrix();
+	font->Draw_String(str, x, y);
 }
 
 void OpenGLRenderer::closeWindow()

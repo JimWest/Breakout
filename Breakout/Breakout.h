@@ -9,6 +9,7 @@
 
 #include "IRenderer.h"
 #include "OpenGLRenderer.h"
+#include "MathUtility.h"
 
 #define RES_WIDTH	600
 #define RES_HEIGHT	400

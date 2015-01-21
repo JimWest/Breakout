@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "Breakout.h"
-#include "MathUtility.h"
 
 Breakout::Breakout(IRenderer* renderObject)
 {
@@ -65,6 +64,9 @@ void Breakout::start()
 	// GameLoop
 	while (renderer->getRunning())
 	{	
+		
+	renderer->renderString("TEST", 300, 200);
+
 		currentFrame = renderer->getTime();
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
