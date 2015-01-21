@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Breakout.h"
-
+#include "MathUtility.h"
 
 Breakout::Breakout(IRenderer* renderObject)
 {
@@ -154,10 +154,22 @@ void Breakout::checkPlayerBounds()
 void Breakout::handleBallCollisions()
 {
 
-	if ( testAABB(*ball, *player) == true ) 
+	if (testAABB(*ball, *player)) 
 	{
-		Vector2 oldVel = ball->getVelocity();
-		ball->setVelocity(Vector2(oldVel.x, oldVel.y * -1));
+		// special collision with player
+		Vector2 vel = ball->getVelocity();
+		vel.y *= -1;
+
+		if (ball->getCenter().x < player->getCenter().x)
+		{
+			vel.x = -1 * MathUtility::abs(vel.x);
+		}
+		else
+		{
+			vel.x = MathUtility::abs(vel.x);
+		}
+
+		ball->setVelocity(vel);
 	} 
 	else 
 	{
@@ -167,10 +179,13 @@ void Breakout::handleBallCollisions()
 		{
 			if ( bricks[n]->getLife() > 0 ) 
 			{
-				if ( testAABB(*ball, *bricks[n]) == true ) 
+				if (testAABB(*ball, *bricks[n])) 
 				{
-					Vector2 oldVel = ball->getVelocity();
-					ball->setVelocity(Vector2(oldVel.x * -1, oldVel.y));
+					Vector2 vel = ball->getVelocity();
+
+
+
+					ball->setVelocity(vel);
 					bricks[n]->decLife();
 					score ++;
 					break; 
