@@ -20,7 +20,5 @@ public:
 
 	virtual void Update(float deltaTime);
 	virtual void move(Vector2 moveVector);
-
-	virtual Collision getCollision(StaticBox* otherStaticBox);
 };
 

@@ -13,23 +13,23 @@ Breakout::Breakout(IRenderer* renderObject)
 	ball->setVelocity(Vector2(BALL_velocity_X, BALL_velocity_Y));
 
 	for ( int n = 0, x = 4, y = 10; n < BRICKS_AMOUNT; n++, x+=66 ) 
-    {
-      if ( x > 560 ) 
-        {
-          x = 4;
-          y += 25; 
-        }
+	{
+		if ( x > 560 ) 
+		{
+			x = 4;
+			y += 25; 
+		}
 
-	  Color brickCol = Color(0, 0.5f, 0.25f);
+		Color brickCol = Color(0, 0.5f, 0.25f);
 
-	  if ( n%2 == 0 ) 
-	  {
-		  brickCol = Color(1, 1, 0);
-	  }
+		if ( n%2 == 0 ) 
+		{
+			brickCol = Color(1, 1, 0);
+		}
 
 
-	  bricks[n] = new Brick(Vector2(x, y), 60, 20, brickCol, 1);
-    }
+		bricks[n] = new Brick(Vector2(x, y), 60, 20, brickCol, 1);
+	}
 
 	double currentFrame = renderer->getTime();
 	double lastFrame = currentFrame;
@@ -59,7 +59,7 @@ void Breakout::start()
 	double lastFrame = currentFrame;
 	double deltaTime;
 	countDownEnd = currentFrame + COUNTDOWN_START;
-	
+
 	Vector2 center = player->getCenter();
 
 	// GameLoop
@@ -124,107 +124,85 @@ void Breakout::start()
 
 }
 
-bool Breakout::testAABB(float Ax, float Ay, float Aw, float Ah, float Bx, float By, float Bw, float Bh)
+bool Breakout::testAABB(const StaticBox &a, const StaticBox &b)
 {
-  if ( Ay+Ah < By ) return false; 
-  else if ( Ay > By+Bh ) return false;
-  else if ( Ax+Aw < Bx ) return false; 
-  else if ( Ax > Bx+Bw ) return false; 
- 
-  return true; 
+	if ( a.getOrigin().y + a.getHeight() < b.getOrigin().y ) return false; 
+	else if ( a.getOrigin().y > b.getOrigin().y +  b.getHeight() ) return false;
+	else if ( a.getOrigin().x + a.getWidth() < b.getOrigin().x ) return false; 
+	else if ( a.getOrigin().x > b.getOrigin().x + b.getWidth() ) return false; 
+
+	return true; 
 }
 
 
 
 void Breakout::checkPlayerBounds()
 {
-	
+
 	if ( player->getOrigin().x < 0 ) 
-    {			
+	{			
 		player->setOrigin(Vector2(0, player->getOrigin().y));
-    }
- 
+	}
+
 	if ( player->getOrigin().x + player->getWidth() > RES_WIDTH ) 
-    {
-        player->setOrigin(Vector2(RES_WIDTH - player->getWidth(), player->getOrigin().y));
-    }
+	{
+		player->setOrigin(Vector2(RES_WIDTH - player->getWidth(), player->getOrigin().y));
+	}
 }
 
 
 void Breakout::handleBallCollisions()
 {
 
-	Collision playerCol = ball->getCollision(player);
-	if (playerCol.colided)
+	if ( testAABB(*ball, *player) == true ) 
 	{
-		//ball->bounceOff(playerCol);
-	}
-
-	Vector2 ballOrigin = ball->getOrigin();
-
-	for ( int n = 0; n < BRICKS_AMOUNT; n++ ) 
+		Vector2 oldVel = ball->getVelocity();
+		ball->setVelocity(Vector2(oldVel.x, oldVel.y * -1));
+	} 
+	else 
 	{
-		if ( bricks[n]->getLife() > 0 ) 
+		Vector2 ballOrigin = ball->getOrigin();
+
+		for ( int n = 0; n < BRICKS_AMOUNT; n++ ) 
 		{
-			if ( testAABB(ballOrigin.x, ballOrigin.y, ball->getWidth(), ball->getHeight(), 
-				bricks[n]->getOrigin().x,bricks[n]->getOrigin().y, bricks[n]->getWidth(), bricks[n]->getHeight()) == true ) 
+			if ( bricks[n]->getLife() > 0 ) 
 			{
-				Vector2 oldVel = ball->getVelocity();
-				ball->setVelocity(Vector2(oldVel.x * -1, oldVel.y));
-				bricks[n]->decLife();
-				score ++;
-				break; 
+				if ( testAABB(*ball, *bricks[n]) == true ) 
+				{
+					Vector2 oldVel = ball->getVelocity();
+					ball->setVelocity(Vector2(oldVel.x * -1, oldVel.y));
+					bricks[n]->decLife();
+					score ++;
+					break; 
+				}
 			}
 		}
-	}
 
 
-	for ( int n = 0; n < BRICKS_AMOUNT; n++ )
-	{
-		if ( bricks[n]->getLife() > 0 ) 
+		if ( ballOrigin.x < 0 )
 		{
-			if ( testAABB(ballOrigin.x, ballOrigin.y, ball->getWidth(), ball->getHeight(), 
-				bricks[n]->getOrigin().x,bricks[n]->getOrigin().y, bricks[n]->getWidth(), bricks[n]->getHeight()) == true ) 
-			{
-				Vector2 oldVel = ball->getVelocity();
-				ball->setVelocity(Vector2(oldVel.x, oldVel.y * -1));
-				bricks[n]->decLife();
-				score ++ ;
-				break;
-			}
+			Vector2 oldVel = ball->getVelocity();
+			ball->setVelocity(Vector2(oldVel.x * -1, oldVel.y ));
 		}
-	}
 
-	if ( ballOrigin.x < 0 )
-	{
-		Vector2 oldVel = ball->getVelocity();
-		ball->setVelocity(Vector2(oldVel.x * -1, oldVel.y ));
-	}
+		else if ( ballOrigin.x + ball->getWidth() > RES_WIDTH )
+		{
+			Vector2 oldVel = ball->getVelocity();
+			ball->setVelocity(Vector2(oldVel.x * -1, oldVel.y ));
+		}
 
-	else if ( ballOrigin.x + ball->getWidth() > RES_WIDTH )
-	{
-		Vector2 oldVel = ball->getVelocity();
-		ball->setVelocity(Vector2(oldVel.x * -1, oldVel.y ));
-	}
+		if ( ballOrigin.y < 0 )
+		{
+			Vector2 oldVel = ball->getVelocity();
+			ball->setVelocity(Vector2(oldVel.x , oldVel.y * -1));
+		}
 
-	if ( ballOrigin.y < 0 )
-	{
-		Vector2 oldVel = ball->getVelocity();
-		ball->setVelocity(Vector2(oldVel.x , oldVel.y * -1));
-	}
+		else if ( ballOrigin.y + ball->getWidth() > RES_HEIGHT ) //if the ball hit the bottom edge of screen
+		{
+			this->resetGame();
+		}
 
-	else if ( ballOrigin.y + ball->getWidth() > RES_HEIGHT ) //if the ball hit the bottom edge of screen
-	{
-		this->resetGame();
 	}
-
-	/*
-	if ( testAABB(ballX,ballY,ballWH,ballWH,myX,myY,width,height) == true ) //if there is a collision between the ball and pad
-	{
-		vellY = -vellY; //change the ball's y velocity/speed
-	}
-	*/
-
 }
 
 

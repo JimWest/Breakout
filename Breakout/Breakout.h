@@ -50,7 +50,7 @@ private:
 	int score;
 	double countDownEnd;
 
-	bool testAABB(float Ax, float Ay, float Aw, float Ah, float Bx, float By, float Bw, float Bh);
+	bool testAABB(const StaticBox &a, const StaticBox &b);
 	void handleBallCollisions();
 	void checkPlayerBounds();
 
