@@ -30,8 +30,8 @@
 
 #define BALL_X	400
 #define BALL_Y	300
-#define BALL_HEIGHT	20
-#define BALL_WIDTH	20
+#define BALL_HEIGHT	15
+#define BALL_WIDTH	15
 
 #define BALL_velocity_X	-120
 #define BALL_velocity_Y	120

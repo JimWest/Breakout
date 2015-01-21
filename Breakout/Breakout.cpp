@@ -171,53 +171,58 @@ void Breakout::handleBallCollisions()
 
 		ball->setVelocity(vel);
 	} 
-	else 
+
+	Vector2 ballOrigin = ball->getOrigin();
+
+	for ( int n = 0; n < BRICKS_AMOUNT; n++ ) 
 	{
-		Vector2 ballOrigin = ball->getOrigin();
-
-		for ( int n = 0; n < BRICKS_AMOUNT; n++ ) 
+		if ( bricks[n]->getLife() > 0 ) 
 		{
-			if ( bricks[n]->getLife() > 0 ) 
+			if (testAABB(*ball, *bricks[n])) 
 			{
-				if (testAABB(*ball, *bricks[n])) 
+				Vector2 vel = ball->getVelocity();
+
+				if (ball->getOrigin().x < bricks[n]->getOrigin().x || ball->getOrigin().x > bricks[n]->getOrigin().x + bricks[n]->getWidth())
 				{
-					Vector2 vel = ball->getVelocity();
-
-
-
-					ball->setVelocity(vel);
-					bricks[n]->decLife();
-					score ++;
-					break; 
+					vel.x *= -1;
 				}
+				else
+				{
+					vel.y *= -1;
+				}
+
+				ball->setVelocity(vel);
+				bricks[n]->decLife();
+				score ++;
+				break; 
 			}
 		}
-
-
-		if ( ballOrigin.x < 0 )
-		{
-			Vector2 oldVel = ball->getVelocity();
-			ball->setVelocity(Vector2(oldVel.x * -1, oldVel.y ));
-		}
-
-		else if ( ballOrigin.x + ball->getWidth() > RES_WIDTH )
-		{
-			Vector2 oldVel = ball->getVelocity();
-			ball->setVelocity(Vector2(oldVel.x * -1, oldVel.y ));
-		}
-
-		if ( ballOrigin.y < 0 )
-		{
-			Vector2 oldVel = ball->getVelocity();
-			ball->setVelocity(Vector2(oldVel.x , oldVel.y * -1));
-		}
-
-		else if ( ballOrigin.y + ball->getWidth() > RES_HEIGHT ) //if the ball hit the bottom edge of screen
-		{
-			this->resetGame();
-		}
-
 	}
+
+
+	if ( ballOrigin.x < 0 )
+	{
+		Vector2 oldVel = ball->getVelocity();
+		ball->setVelocity(Vector2(oldVel.x * -1, oldVel.y ));
+	}
+
+	else if ( ballOrigin.x + ball->getWidth() > RES_WIDTH )
+	{
+		Vector2 oldVel = ball->getVelocity();
+		ball->setVelocity(Vector2(oldVel.x * -1, oldVel.y ));
+	}
+
+	if ( ballOrigin.y < 0 )
+	{
+		Vector2 oldVel = ball->getVelocity();
+		ball->setVelocity(Vector2(oldVel.x , oldVel.y * -1));
+	}
+
+	else if ( ballOrigin.y + ball->getWidth() > RES_HEIGHT ) //if the ball hit the bottom edge of screen
+	{
+		this->resetGame();
+	}
+
 }
 
 
