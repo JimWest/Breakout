@@ -71,6 +71,8 @@ void Breakout::start()
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
 
+		deltaTime = 0.02;
+		
 		// reset player velocity so hes not moving all the time without keypress
 		player->setVelocity(Vector2(0.0f, 0.0f));
 
@@ -162,7 +164,7 @@ void Breakout::handleBallCollisions()
 		Vector2 vel = ball->getVelocity();
 		vel.y *= -1;
 
-		if (ball->getCenter().x < player->getCenter().x)
+		if (ball->getCenter().x <= player->getCenter().x)
 		{
 			vel.x = -1 * MathUtility::abs(vel.x);
 		}
@@ -184,7 +186,7 @@ void Breakout::handleBallCollisions()
 			{
 				Vector2 vel = ball->getVelocity();
 
-				if (ball->getOrigin().x < bricks[n]->getOrigin().x || ball->getOrigin().x > bricks[n]->getOrigin().x + bricks[n]->getWidth())
+				if (ball->getOrigin().x + ball->getWidth() < bricks[n]->getOrigin().x || ball->getOrigin().x > bricks[n]->getOrigin().x + bricks[n]->getWidth())
 				{
 					vel.x *= -1;
 				}
@@ -202,19 +204,19 @@ void Breakout::handleBallCollisions()
 	}
 
 
-	if ( ballOrigin.x < 0 )
+	if ( ballOrigin.x <= 0 )
 	{
 		Vector2 oldVel = ball->getVelocity();
 		ball->setVelocity(Vector2(oldVel.x * -1, oldVel.y ));
 	}
 
-	else if ( ballOrigin.x + ball->getWidth() > RES_WIDTH )
+	else if ( ballOrigin.x + ball->getWidth() >= RES_WIDTH )
 	{
 		Vector2 oldVel = ball->getVelocity();
 		ball->setVelocity(Vector2(oldVel.x * -1, oldVel.y ));
 	}
 
-	if ( ballOrigin.y < 0 )
+	if ( ballOrigin.y <= 0 )
 	{
 		Vector2 oldVel = ball->getVelocity();
 		ball->setVelocity(Vector2(oldVel.x , oldVel.y * -1));

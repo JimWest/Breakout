@@ -47,9 +47,9 @@ void OpenGLRenderer::createWindow(int width, int height)
 	glfwGetFramebufferSize(mWindow, &width, &height);
 	ratio = width / (float) height;
 
+	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_BLEND);
-	glEnable(GL_SMOOTH);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glfwWindowHint(GLFW_SAMPLES, 4);	// no struttering anymore
 
 	glViewport(0, 0, width, height);
 	glClear(GL_COLOR_BUFFER_BIT);
