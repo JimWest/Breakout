@@ -2,7 +2,6 @@
 #include "DynamicBox.h"
 
 
-
 Vector2 DynamicBox::getVelocity() const
 {
 	return this->mVelocity;
@@ -43,7 +42,6 @@ void DynamicBox::Update(float deltaTime)
 
 void DynamicBox::move(Vector2 moveVector)
 {
-	//Vector2 newOrigin = this->getOrigin() + moveVector;
 	this->setOrigin(this->getOrigin() + moveVector);
 }
 

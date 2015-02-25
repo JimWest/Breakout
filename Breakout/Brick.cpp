@@ -1,13 +1,16 @@
 #include "StdAfx.h"
 #include "Brick.h"
 
+int Brick::getLife() {
+    return this->life;
+}
 
-Brick::Brick(void)
-{
+void Brick::setLife(int life) {
+    this->life = life;
 }
 
 
-Brick::~Brick(void)
+Brick::Brick(void)
 {
 }
 
@@ -15,14 +18,12 @@ Brick::Brick(Vector2 origin, float width, float height, Color c, int life) : Sta
     this->life = life;
 }
 
-void Brick::setLife(int life) {
-    this->life = life;
+Brick::~Brick(void)
+{
 }
 
-int Brick::getLife() {
-    return this->life;
-}
 
 void Brick::decLife() {
 	this->life--;
 }
+

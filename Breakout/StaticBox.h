@@ -1,14 +1,8 @@
 #pragma once
+#include <GLFW/glfw3.h>
 #include "Vector2.h"
 #include "Color.h"
 
-enum Orientation  {TOP, RIGHT, BOTTOM, LEFT};
-
-struct Collision {
-  bool colided;
-  Orientation orientation;
-  Vector2 collisionPoint;
-} ;
 
 class StaticBox 
 {

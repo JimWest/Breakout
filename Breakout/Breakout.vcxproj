@@ -83,11 +83,9 @@
     <ClInclude Include="Direct3dRenderer.h" />
     <ClInclude Include="DynamicBox.h" />
     <ClInclude Include="Game.h" />
-    <ClInclude Include="GameWindow.h" />
     <ClInclude Include="IRenderer.h" />
     <ClInclude Include="MathUtility.h" />
     <ClInclude Include="Color.h" />
-    <ClInclude Include="OpenGLFont.h" />
     <ClInclude Include="OpenGLRenderer.h" />
     <ClInclude Include="StaticBox.h" />
     <ClInclude Include="resource.h" />
@@ -96,15 +94,23 @@
     <ClInclude Include="Vector2.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="0.c" />
+    <ClCompile Include="1.c" />
+    <ClCompile Include="2.c" />
+    <ClCompile Include="3.c" />
+    <ClCompile Include="4.c" />
+    <ClCompile Include="5.c" />
+    <ClCompile Include="6.c" />
+    <ClCompile Include="7.c" />
+    <ClCompile Include="8.c" />
+    <ClCompile Include="9.c" />
     <ClCompile Include="Breakout.cpp" />
     <ClCompile Include="Brick.cpp" />
     <ClCompile Include="Direct3dRenderer.cpp" />
     <ClCompile Include="DynamicBox.cpp" />
-    <ClCompile Include="GameWindow.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MathUtility.cpp" />
     <ClCompile Include="Color.cpp" />
-    <ClCompile Include="OpenGLFont.cpp" />
     <ClCompile Include="OpenGLRenderer.cpp" />
     <ClCompile Include="StaticBox.cpp" />
     <ClCompile Include="stdafx.cpp">

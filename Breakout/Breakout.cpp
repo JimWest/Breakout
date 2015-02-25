@@ -11,12 +11,12 @@ Breakout::Breakout(IRenderer* renderObject)
 	ball = new DynamicBox(Vector2( BALL_X, BALL_Y), BALL_WIDTH, BALL_HEIGHT);
 	ball->setVelocity(Vector2(BALL_velocity_X, BALL_velocity_Y));
 
-	for ( int n = 0, x = 4, y = 10; n < BRICKS_AMOUNT; n++, x+=66 ) 
+	for ( int n = 0, x = BRICK_PADDING_RIGHT, y = BRICKS_START_Y; n < BRICKS_AMOUNT; n++, x+=BRICK_WIDTH + BRICK_PADDING_RIGHT ) 
 	{
-		if ( x > 560 ) 
+		if ( x > (RES_WIDTH -  BRICK_WIDTH)) 
 		{
-			x = 4;
-			y += 25; 
+			x = BRICK_PADDING_RIGHT;
+			y += BRICK_HEIGHT + BRICK_PADDING_BOTTOM; 
 		}
 
 		Color brickCol = Color(0, 0.5f, 0.25f);
@@ -27,7 +27,7 @@ Breakout::Breakout(IRenderer* renderObject)
 		}
 
 
-		bricks[n] = new Brick(Vector2(x, y), 60, 20, brickCol, 1);
+		bricks[n] = new Brick(Vector2(x, y), BRICK_WIDTH, BRICK_HEIGHT, brickCol, 1);
 	}
 
 	double currentFrame = renderer->getTime();
@@ -64,8 +64,6 @@ void Breakout::start()
 	// GameLoop
 	while (renderer->getRunning())
 	{	
-		
-	renderer->renderString("TEST", 300, 200);
 
 		currentFrame = renderer->getTime();
 		deltaTime = currentFrame - lastFrame;
@@ -108,10 +106,15 @@ void Breakout::start()
 			ball->Update(deltaTime);
 			handleBallCollisions();
 			checkPlayerBounds();
-		}		
+		}	
 
 
 		renderer->preRender();
+				
+		renderer->renderNumber(score % 1000 / 100 , SCORE_X, SCORE_Y);
+		renderer->renderNumber(score % 100 / 10 , SCORE_X + 40 , SCORE_Y);
+		renderer->renderNumber(score % 10, SCORE_X + 80, SCORE_Y);
+
 		renderer->renderObject(ball);
 		renderer->renderObject(player);
 

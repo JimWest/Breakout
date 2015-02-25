@@ -1,17 +1,13 @@
 #include "StdAfx.h"
 #include "OpenGLRenderer.h"
 
-
 OpenGLRenderer::OpenGLRenderer(void)
 {
-	const char *file = "arial.font";
-	font = new OpenGLFont(file);
-}
 
+}
 
 OpenGLRenderer::~OpenGLRenderer(void)
 {
-	delete font;
 	glfwTerminate();
 }
 
@@ -54,7 +50,10 @@ void OpenGLRenderer::createWindow(int width, int height)
 	glViewport(0, 0, width, height);
 	glClear(GL_COLOR_BUFFER_BIT);
 	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
+	glLoadIdentity();	
+
+	glGenTextures(1, &score);
+									
 }
 
 void OpenGLRenderer::preRender()
@@ -64,12 +63,13 @@ void OpenGLRenderer::preRender()
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-	glPushMatrix();
 	glOrtho(0 ,m_Width, m_Height, 0, -1, 1);
 }
 
 void OpenGLRenderer::renderObject(StaticBox* box)
-{	
+{		
+	glPushMatrix();
+
 	glColor3f(box->getColor().getR(), box->getColor().getG(), box->getColor().getB()); // (0.5, 0, 1) is half red and full blue, giving dark purple.
 
 	 glBegin(GL_QUADS); 
@@ -78,35 +78,86 @@ void OpenGLRenderer::renderObject(StaticBox* box)
 		glVertex2f(box->getOrigin().x + box->getWidth(), box->getOrigin().y + box->getHeight());
 		glVertex2f(box->getOrigin().x, box->getOrigin().y + box->getHeight());
 	glEnd( );
+
+	glPopMatrix();
 }
 
 
 void OpenGLRenderer::postRender()
 {	
-	glPopMatrix();
-
-	/*
-	glPushMatrix();	
-	glTranslatef(200, 0, 0);
-	glBegin(GL_LINES);
-		glColor3ub(255, 0, 0);
-		glVertex2f(0.0f, 0.0f);
-
-		glColor3ub(0, 0 ,255);
-		glVertex2f(800.0f, 600.0f);
-	glEnd();
-
-	glPopMatrix();
-	*/
-
 	glfwSwapBuffers(mWindow);
 	glfwPollEvents();
 }
 
+GLenum GetDataFormat(){
+  return  GL_EXT_bgra;
+}
+GLenum GetDataType(){
+  return  GL_UNSIGNED_BYTE;
+}
 
-void OpenGLRenderer::renderString(const std::string& str, float x, float y)
+
+void OpenGLRenderer::renderNumber(int number, int x, int y)
 {	
-	font->Draw_String(str, x, y);
+	glPushMatrix();
+	
+	glBindTexture(GL_TEXTURE_2D, score);
+
+	switch (number)
+	{		
+		case 1:
+			glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, number_0.width, number_0.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, number_1.pixel_data);
+			break;
+		case 2:
+			glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, number_0.width, number_0.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, number_2.pixel_data);
+			break;
+		case 3:
+			glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, number_0.width, number_0.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, number_3.pixel_data);
+			break;
+		case 4:
+			glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, number_0.width, number_0.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, number_4.pixel_data);
+			break;
+		case 5:
+			glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, number_0.width, number_0.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, number_5.pixel_data);
+			break;
+		case 6:
+			glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, number_0.width, number_0.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, number_6.pixel_data);
+			break;
+		case 7:
+			glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, number_0.width, number_0.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, number_7.pixel_data);
+			break;
+		case 8:
+			glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, number_0.width, number_0.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, number_8.pixel_data);
+			break;
+		case 9:
+			glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, number_0.width, number_0.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, number_9.pixel_data);
+			break;
+		case 0:
+		default:
+			glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, number_0.width, number_0.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, number_0.pixel_data);
+	}
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+    glEnable(GL_TEXTURE_2D);
+
+	glTranslatef(x, y, 1);
+	glScalef(30, 40, 1);
+	
+
+	glColor3f(1,1,1);
+	glBegin(GL_QUADS);
+		glNormal3f(0.0, 0.0, 1.0);
+		glTexCoord2d(0, 0); glVertex2d(0.0, 0.0);
+		glTexCoord2d(0, 1); glVertex2d(0.0, 1.0);
+		glTexCoord2d(1, 1); glVertex2d(1.0, 1.0);
+		glTexCoord2d(1, 0); glVertex2d(1.0, 0.0);
+	glEnd();
+ 
+	glDisable(GL_TEXTURE_2D);
+
+	glPopMatrix(); 
 }
 
 void OpenGLRenderer::closeWindow()

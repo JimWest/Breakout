@@ -1,9 +1,5 @@
 #pragma once
-
 #include "StaticBox.h"
-#include <string>
-#include <iostream>
-#include <fstream>
 
 class IRenderer
 {
@@ -14,7 +10,7 @@ public:
 	virtual void preRender() {};
 	virtual void renderObject(StaticBox* box) {}; 
 	virtual void postRender() {};
-	virtual void renderString(const std::string& str, float x, float y) {};
+	virtual void renderNumber(int number, int x, int y) {};
 	virtual void closeWindow() {};
 	virtual double getTime() { return 0;};
 	virtual bool getRunning() { return false;};

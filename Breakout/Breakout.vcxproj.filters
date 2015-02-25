@@ -20,9 +20,6 @@
     <ClInclude Include="targetver.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="GameWindow.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -56,9 +53,6 @@
     <ClInclude Include="Breakout.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="OpenGLFont.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="Direct3dRenderer.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -68,9 +62,6 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Breakout.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="GameWindow.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Vector2.cpp">
@@ -97,10 +88,37 @@
     <ClCompile Include="Main.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="OpenGLFont.cpp">
+    <ClCompile Include="Direct3dRenderer.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="Direct3dRenderer.cpp">
+    <ClCompile Include="0.c">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="1.c">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="2.c">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="3.c">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="4.c">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="5.c">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="7.c">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="8.c">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="6.c">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="9.c">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

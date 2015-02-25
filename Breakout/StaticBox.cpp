@@ -1,6 +1,5 @@
 #include "StdAfx.h"
 #include "StaticBox.h"
-#include <GLFW/glfw3.h>
 
 Vector2 StaticBox::getOrigin() const
 {
