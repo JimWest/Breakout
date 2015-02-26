@@ -9,6 +9,9 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
+    <Filter Include="Quelldateien\Numbers">
+      <UniqueIdentifier>{0ad4f099-72c2-4752-8fac-1e332e5302cf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -56,6 +59,9 @@
     <ClInclude Include="Direct3dRenderer.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="KeyInput.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -91,35 +97,35 @@
     <ClCompile Include="Direct3dRenderer.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="9.c">
+      <Filter>Quelldateien\Numbers</Filter>
+    </ClCompile>
     <ClCompile Include="0.c">
-      <Filter>Quelldateien</Filter>
+      <Filter>Quelldateien\Numbers</Filter>
     </ClCompile>
     <ClCompile Include="1.c">
-      <Filter>Quelldateien</Filter>
+      <Filter>Quelldateien\Numbers</Filter>
     </ClCompile>
     <ClCompile Include="2.c">
-      <Filter>Quelldateien</Filter>
+      <Filter>Quelldateien\Numbers</Filter>
     </ClCompile>
     <ClCompile Include="3.c">
-      <Filter>Quelldateien</Filter>
+      <Filter>Quelldateien\Numbers</Filter>
     </ClCompile>
     <ClCompile Include="4.c">
-      <Filter>Quelldateien</Filter>
+      <Filter>Quelldateien\Numbers</Filter>
     </ClCompile>
     <ClCompile Include="5.c">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="7.c">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="8.c">
-      <Filter>Quelldateien</Filter>
+      <Filter>Quelldateien\Numbers</Filter>
     </ClCompile>
     <ClCompile Include="6.c">
-      <Filter>Quelldateien</Filter>
+      <Filter>Quelldateien\Numbers</Filter>
     </ClCompile>
-    <ClCompile Include="9.c">
-      <Filter>Quelldateien</Filter>
+    <ClCompile Include="7.c">
+      <Filter>Quelldateien\Numbers</Filter>
+    </ClCompile>
+    <ClCompile Include="8.c">
+      <Filter>Quelldateien\Numbers</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -10,6 +10,7 @@
 #include "IRenderer.h"
 #include "OpenGLRenderer.h"
 #include "MathUtility.h"
+#include "KeyInput.h"
 
 #define RES_WIDTH	600
 #define RES_HEIGHT	600
@@ -44,10 +45,10 @@ class Breakout :
 	public Game
 {
 private:	
-	IRenderer* renderer;
-	DynamicBox* player;
-	DynamicBox* ball;
-	Brick* bricks[BRICKS_AMOUNT];	
+	IRenderer *renderer;
+	DynamicBox *player;
+	DynamicBox *ball;
+	Brick *bricks[BRICKS_AMOUNT];	
 
 	int score;
 	double countDownEnd;

@@ -4,6 +4,7 @@
 #include <windowsx.h>
 #include <iostream>
 #include <ctime>
+#include "KeyInput.h"
 
 #include <d3d9.h>
 #include <d3dx9.h>
@@ -24,7 +25,7 @@ private:
 
 	LPD3DXSPRITE gSprite;			// our sprite interfaces
 	LPDIRECT3DTEXTURE9 gTexture;	// our texture
-	ID3DXFont*	g_pFont;
+	ID3DXFont *g_pFont;
 
 	HWND hWnd;
 	MSG msg;

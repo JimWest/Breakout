@@ -1,7 +1,10 @@
 #include "stdafx.h"
 #include "Breakout.h"
 
-Breakout::Breakout(IRenderer* renderObject)
+// Constructor for the Breakout game object
+// needs a IRenderer *Object to render primitives
+// Creates all the objects needed to start the game
+Breakout::Breakout(IRenderer *renderObject)
 {
 	renderer = renderObject;
 	renderer->createWindow(RES_WIDTH, RES_HEIGHT);
@@ -51,7 +54,8 @@ Breakout::~Breakout(void)
 }
 
 
-
+// Starts the game and its main loop,
+// will only terminate if the game exits
 void Breakout::start()
 {	
 	double currentFrame = renderer->getTime();
@@ -70,17 +74,11 @@ void Breakout::start()
 		lastFrame = currentFrame;
 
 		deltaTime = 0.02;
-		
+
 		// reset player velocity so hes not moving all the time without keypress
 		player->setVelocity(Vector2(0.0f, 0.0f));
 
-		if (renderer->getKey(GLFW_KEY_ESCAPE))
-		{
-			renderer->closeWindow();
-		} 
-
-
-		if (renderer->getKey(GLFW_KEY_R))
+		if (renderer->getKey(KeyR))
 		{
 			resetGame();
 		} 
@@ -88,12 +86,12 @@ void Breakout::start()
 		if (currentFrame >= countDownEnd)
 		{
 
-			if (renderer->getKey(GLFW_KEY_LEFT))
+			if (renderer->getKey(KeyLeft))
 			{
 				player->setVelocity(Vector2(-PLAYER_SPEED, 0.0f));
 			}
 
-			if (renderer->getKey(GLFW_KEY_RIGHT))
+			if (renderer->getKey(KeyRight))
 			{
 				player->setVelocity(Vector2(PLAYER_SPEED, 0.0f));	
 			}
@@ -108,9 +106,9 @@ void Breakout::start()
 			checkPlayerBounds();
 		}	
 
-
+		// All the rendering stuff happens here
 		renderer->preRender();
-				
+
 		renderer->renderNumber(score % 1000 / 100 , SCORE_X, SCORE_Y);
 		renderer->renderNumber(score % 100 / 10 , SCORE_X + 40 , SCORE_Y);
 		renderer->renderNumber(score % 10, SCORE_X + 80, SCORE_Y);
@@ -131,6 +129,11 @@ void Breakout::start()
 
 }
 
+
+// AABB -  Axis-Aligned Bounding Boxes
+// Algorithm to detect simple 2D Colloision (no rotation, only rectangles)
+//
+// returns true if the two bodys colide with eachother
 bool Breakout::testAABB(const StaticBox &a, const StaticBox &b)
 {
 	if ( a.getOrigin().y + a.getHeight() < b.getOrigin().y ) return false; 
@@ -142,7 +145,8 @@ bool Breakout::testAABB(const StaticBox &a, const StaticBox &b)
 }
 
 
-
+// Checks if the player is in between the bounds of the window
+// Moves the player back if he moves out of bounds
 void Breakout::checkPlayerBounds()
 {
 
@@ -158,6 +162,11 @@ void Breakout::checkPlayerBounds()
 }
 
 
+// Handles all the collisions of the ball 
+// (ball - wall, ball - player, ball - brick)
+//
+// Changes the velocity of the ball if a collision occurs
+// Also checks if the ball touched the bottom bound and resets the game
 void Breakout::handleBallCollisions()
 {
 
@@ -225,14 +234,16 @@ void Breakout::handleBallCollisions()
 		ball->setVelocity(Vector2(oldVel.x , oldVel.y * -1));
 	}
 
-	else if ( ballOrigin.y + ball->getWidth() > RES_HEIGHT ) //if the ball hit the bottom edge of screen
-	{
+	else if ( ballOrigin.y + ball->getWidth() > RES_HEIGHT ) 
+	{		
 		this->resetGame();
 	}
 
 }
 
-
+// Resets the game back to the starting conditions
+// - countdown timer, velocity, bricks, player
+// Will start directly a new game
 void Breakout::resetGame()
 {	
 	player->setOrigin(Vector2(PLAYER_X, PLAYER_Y));
@@ -242,7 +253,7 @@ void Breakout::resetGame()
 	double currentFrame = renderer->getTime();
 	countDownEnd = renderer->getTime() + COUNTDOWN_START;
 
-	for ( int n = 0; n < BRICKS_AMOUNT; n++ ) //A for loop that goes throught the array so we can set every bricks alive to true (not broken)
+	for ( int n = 0; n < BRICKS_AMOUNT; n++ )
 	{
 		bricks[n]->setLife(1);
 	}

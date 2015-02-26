@@ -84,6 +84,7 @@
     <ClInclude Include="DynamicBox.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="IRenderer.h" />
+    <ClInclude Include="KeyInput.h" />
     <ClInclude Include="MathUtility.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="OpenGLRenderer.h" />

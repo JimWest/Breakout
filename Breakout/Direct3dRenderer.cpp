@@ -22,6 +22,7 @@ Direct3dRenderer::~Direct3dRenderer(void)
 		gSprite=NULL;
 	}
 
+
 	d3ddev->Release();    // close and release the 3D device
 	d3d->Release();    // close and release Direct3D
 }
@@ -82,6 +83,7 @@ void Direct3dRenderer::initD3D(HWND hWnd)
                          L"Sans",              // pFaceName
                          &g_pFont );              // ppFont
 }
+
 
 void Direct3dRenderer::createWindow(int width, int height)
 {	
@@ -206,17 +208,41 @@ bool Direct3dRenderer::getRunning()
 
 int Direct3dRenderer::getKey(int key)
 {
+
 	if (msg.message == WM_KEYDOWN)
 	{	
-		if (key == 263)
+		int directXKey = 0;
+		 
+		switch (key)
 		{
-			return msg.wParam == VK_LEFT;		
+		case KeyUp:
+			directXKey = VK_UP;
+			break;
+		case KeyDown:
+			directXKey = VK_DOWN;
+			break;
+		case KeyLeft:
+			directXKey = VK_LEFT;
+			break;
+		case KeyRight:
+			directXKey = VK_RIGHT;
+			break;
+		default:
+			return 0;				
 		}
-		else if (key == 262)
+
+		return msg.wParam == directXKey;
+	}
+	else if (msg.message == WM_CHAR)
+	{
+		switch (key)
 		{
-			return msg.wParam == VK_RIGHT;
+		case KeyR:
+			return msg.wParam == 'r';
+			break;
 		}
 	}
+
 	return 0;
 }
 
