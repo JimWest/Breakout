@@ -1,8 +1,8 @@
 #pragma once
 #include "irenderer.h"
+#include "stdlib.h"
 #include <windows.h>
 #include <windowsx.h>
-#include <iostream>
 #include <ctime>
 #include "KeyInput.h"
 

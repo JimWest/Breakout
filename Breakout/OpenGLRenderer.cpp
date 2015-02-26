@@ -23,7 +23,9 @@ void OpenGLRenderer::createWindow(int width, int height, char *title)
 	m_Height = height;
 
 	// Initialize the glfw library
-	glfwInit();  
+	if (!glfwInit())
+		exit(EXIT_FAILURE);
+
 	glfwSetErrorCallback(error_callback);
 
 	mRunning = true;
@@ -34,6 +36,7 @@ void OpenGLRenderer::createWindow(int width, int height, char *title)
 	if (!mWindow)
 	{
 		glfwTerminate();
+		exit(EXIT_FAILURE);
 	}	
 
 	glfwMakeContextCurrent(mWindow);

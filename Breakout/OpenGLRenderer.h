@@ -1,5 +1,6 @@
 #pragma once
 #include "irenderer.h"
+#include "stdlib.h"
 #include <GLFW/glfw3.h>
 #include "KeyInput.h"
 
