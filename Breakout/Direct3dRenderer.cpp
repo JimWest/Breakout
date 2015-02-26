@@ -80,16 +80,16 @@ void Direct3dRenderer::initD3D(HWND hWnd)
 	D3DXFilterTexture (gTexture, 0, 0, D3DX_DEFAULT); 
 
 	// create the font for text rendering
-	int nHeight = 40;
+	int nHeight = 54;
 	D3DXCreateFont( d3ddev,				// D3D device
 		nHeight,						// Height
 		0,								// Width
-		FW_BOLD,						// Weight
+		FW_NORMAL,						// Weight
 		1,								// MipLevels, 0 = autogen mipmaps
 		FALSE,							// Italic
 		DEFAULT_CHARSET,				// CharSet
 		OUT_DEFAULT_PRECIS,				// OutputPrecision
-		DEFAULT_QUALITY,				// Quality
+		NONANTIALIASED_QUALITY,			// Quality
 		DEFAULT_PITCH | FF_DONTCARE,	// PitchAndFamily
 		L"Sans",						// pFaceName
 		&g_pFont );						// ppFont
@@ -97,6 +97,7 @@ void Direct3dRenderer::initD3D(HWND hWnd)
 
 void Direct3dRenderer::createWindow(int width, int height, char *title)
 {	
+	// this is needed cause the directx window is a bit smaller than openGL
 	m_Width = width + 15;
 	m_Height = height + 40;
 
@@ -141,8 +142,6 @@ void Direct3dRenderer::createWindow(int width, int height, char *title)
 
 	MSG msg;
 	ZeroMemory( &msg, sizeof(msg) );
-
-	start = std::time(NULL);
 }
 
 void Direct3dRenderer::preRender()

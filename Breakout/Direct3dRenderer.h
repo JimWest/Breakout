@@ -31,8 +31,6 @@ private:
 	HWND hWnd;
 	MSG msg;
 
-	std::time_t start;	
-	
 	// Set up and initializes Direct3D.
 	// Has to be called after the creation of the window.
 	void initD3D(HWND hWnd);
