@@ -3,7 +3,7 @@
 #include "Vector2.h"
 #include "Color.h"
 
-
+// Realizes a StaticBox that can be rendered in 2D Space.
 class StaticBox 
 {
 

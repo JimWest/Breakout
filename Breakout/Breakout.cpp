@@ -1,9 +1,7 @@
 #include "stdafx.h"
 #include "Breakout.h"
 
-// Constructor for the Breakout game object
-// needs a IRenderer *Object to render primitives
-// Creates all the objects needed to start the game
+
 Breakout::Breakout(IRenderer *renderObject)
 {
 	renderer = renderObject;
@@ -49,8 +47,6 @@ Breakout::~Breakout(void)
 }
 
 
-// Starts the game and its main loop,
-// will only terminate if the game exits
 void Breakout::start()
 {	
 	double currentFrame = renderer->getTime();
@@ -124,11 +120,6 @@ void Breakout::start()
 
 }
 
-
-// AABB -  Axis-Aligned Bounding Boxes
-// Algorithm to detect simple 2D Colloision (no rotation, only rectangles)
-//
-// returns true if the two bodys colide with eachother
 bool Breakout::testAABB(const StaticBox &a, const StaticBox &b)
 {
 	if ( a.getOrigin().y + a.getHeight() < b.getOrigin().y ) return false; 
@@ -139,9 +130,6 @@ bool Breakout::testAABB(const StaticBox &a, const StaticBox &b)
 	return true; 
 }
 
-
-// Checks if the player is in between the bounds of the window
-// Moves the player back if he moves out of bounds
 void Breakout::checkPlayerBounds()
 {
 
@@ -157,11 +145,7 @@ void Breakout::checkPlayerBounds()
 }
 
 
-// Handles all the collisions of the ball 
-// (ball - wall, ball - player, ball - brick)
-//
-// Changes the velocity of the ball if a collision occurs
-// Also checks if the ball touched the bottom bound and resets the game
+
 void Breakout::handleBallCollisions()
 {
 
@@ -236,9 +220,6 @@ void Breakout::handleBallCollisions()
 
 }
 
-// Resets the game back to the starting conditions
-// - countdown timer, velocity, bricks, player
-// Will start directly a new game
 void Breakout::resetGame()
 {	
 	player->setOrigin(Vector2(PLAYER_X, PLAYER_Y));

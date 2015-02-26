@@ -2,6 +2,7 @@
 #include "staticbox.h"
 #include "Color.h"
 
+// Realizes a brick that can be destroyed by a ball.
 class Brick :
 	public StaticBox
 {

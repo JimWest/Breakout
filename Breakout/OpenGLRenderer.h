@@ -14,6 +14,7 @@
 #include "8.c"		
 #include "9.c"	
 
+// Realizes a RenderAPI with OpenGL Engine.
 class OpenGLRenderer :
 	public IRenderer
 {

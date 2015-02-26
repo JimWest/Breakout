@@ -41,6 +41,12 @@
 #define PLAYER_HEIGHT	20
 #define PLAYER_SPEED 240
 
+// Class for the Game Breakout
+// "A ball travels across the screen, bouncing off the top and side walls of the screen. 
+// When a brick is hit, the ball bounces away and the brick is destroyed. 
+// The player loses a turn when the ball touches the bottom of the screen. 
+// To prevent this from happening, the player has a movable paddle to bounce the ball upward, keeping it in play."
+// - Wikipedia, http://en.wikipedia.org/wiki/Breakout_(video_game)
 class Breakout :
 	public Game
 {
@@ -51,17 +57,43 @@ private:
 	Brick *bricks[BRICKS_AMOUNT];	
 
 	int score;
-	double countDownEnd;
+	double countDownEnd;	
 
+	// AABB -  Axis-Aligned Bounding Boxes
+	// Algorithm to detect simple 2D Colloision (no rotation, only rectangles).
+	//
+	// @return True, if the two bodys colide with eachother.
 	bool testAABB(const StaticBox &a, const StaticBox &b);
-	void handleBallCollisions();
+
+	// Handles all the collisions of the ball 
+	// (ball - wall, ball - player, ball - brick).
+	//
+	// Changes the velocity of the ball if a collision occurs.
+	// Also checks if the ball touched the bottom bound and resets the game.
+	void handleBallCollisions();	
+
+	// Checks if the player is in between the bounds of the window and moves the 
+	// player back if he moves out of bounds.
 	void checkPlayerBounds();
 
 public:
+	// Constructor for the Breakout game object.
+	// Creates all the objects needed to start the game.
+	//
+	// @param renderer Object to render primitives.
 	Breakout(IRenderer* renderer);
-	~Breakout(void);
 
+	// Default constructor.
+	~Breakout(void);
+	
+	// Starts the game and its main loop,
+	// will only terminate if the game exits.
 	virtual void start();
+
+	
+	// Resets the game back to the starting conditions
+	// - countdown timer, velocity, bricks, player.
+	// Will start directly a new game.
 	virtual void resetGame();
 };
 

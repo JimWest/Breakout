@@ -1,4 +1,7 @@
 #pragma once
+
+// Describes and manipulates a Color in the RGB color space.
+// http://en.wikipedia.org/wiki/RGB_color_space
 class Color
 {
 
@@ -7,9 +10,7 @@ private:
 	float g;
 	float b;
 
-public:	  
-
-	
+public:	  	
 	// Returns the value of the red property.
 	//
 	// @return The current red value.	
