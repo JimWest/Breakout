@@ -7,6 +7,7 @@ OpenGLRenderer::OpenGLRenderer(void)
 
 OpenGLRenderer::~OpenGLRenderer(void)
 {
+	glfwDestroyWindow(mWindow);
 	glfwTerminate();
 }
 
@@ -85,10 +86,10 @@ void OpenGLRenderer::renderObject(StaticBox* box)
 
 	// actual Render of the box
 	glBegin(GL_QUADS); 
-	glVertex2f(box->getOrigin().x, box->getOrigin().y);
-	glVertex2f(box->getOrigin().x + box->getWidth(), box->getOrigin().y);
-	glVertex2f(box->getOrigin().x + box->getWidth(), box->getOrigin().y + box->getHeight());
-	glVertex2f(box->getOrigin().x, box->getOrigin().y + box->getHeight());
+		glVertex2f(box->getOrigin().x, box->getOrigin().y);
+		glVertex2f(box->getOrigin().x + box->getWidth(), box->getOrigin().y);
+		glVertex2f(box->getOrigin().x + box->getWidth(), box->getOrigin().y + box->getHeight());
+		glVertex2f(box->getOrigin().x, box->getOrigin().y + box->getHeight());
 	glEnd( );
 
 	// Restores both projection and modelview matrices off the top of the matrix stack

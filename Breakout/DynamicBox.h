@@ -26,11 +26,11 @@ public:
 
 	// Updates the current position based on the current velocity,
 	// deltaTime and the old position.
-	virtual void Update(float deltaTime);
+	void Update(float deltaTime);
 
 	// Moves the DynamicBox by the given moveVector.
 	// 
 	// @param moveVector The vector by which the player should be moved with.
-	virtual void move(Vector2 moveVector);
+	void move(Vector2 moveVector);
 };
 
