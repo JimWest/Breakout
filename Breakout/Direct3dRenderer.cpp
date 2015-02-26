@@ -222,7 +222,7 @@ void Direct3dRenderer::closeWindow()
 
 double Direct3dRenderer::getTime()
 {
-	return std::difftime(std::time(NULL), start);
+	return ((float)timeGetTime() / 1000.0f);
 }
 
 bool Direct3dRenderer::getRunning()

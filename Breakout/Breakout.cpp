@@ -64,10 +64,8 @@ void Breakout::start()
 	{	
 
 		currentFrame = renderer->getTime();
-		// deltaTime = currentFrame - lastFrame;
-		// lastFrame = currentFrame;
-
-		deltaTime = 0.02;
+		deltaTime = currentFrame - lastFrame;
+		lastFrame = currentFrame;
 
 		// reset player velocity so hes not moving all the time without keypress
 		player->setVelocity(Vector2(0.0f, 0.0f));
