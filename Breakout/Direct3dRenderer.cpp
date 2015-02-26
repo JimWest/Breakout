@@ -24,17 +24,15 @@ Direct3dRenderer::~Direct3dRenderer(void)
 
 	if (d3ddev)
 	{
-		d3ddev->Release();    // close and release the 3D device
+		d3ddev->Release();    
 		d3ddev=NULL;
 	}
 
 	if (d3d)
 	{
-		d3d->Release();    // close and release Direct3D
+		d3d->Release();    
 		d3d=NULL;
 	}
-
-
 }
 
 // this is the main message handler for the program
@@ -43,7 +41,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
 	switch(message)
 	{
 	case WM_DESTROY:
-		{
+		{			
 			PostQuitMessage(0);
 			return 0;
 		} break;
@@ -120,7 +118,7 @@ void Direct3dRenderer::createWindow(int width, int height, char *title)
 
 	// Convert char* to LPCWSTR
 	wchar_t* wString=new wchar_t[4096];
-    MultiByteToWideChar(CP_ACP, 0, title, -1, wString, 4096);
+	MultiByteToWideChar(CP_ACP, 0, title, -1, wString, 4096);
 
 	hWnd = CreateWindowEx(NULL,
 		L"WindowClass",
@@ -160,10 +158,10 @@ void Direct3dRenderer::preRender()
 		this->mRunning = false;
 	}
 
-	// clear the window to a deep blue
+	// clear the window to a black
 	d3ddev->Clear(0, NULL, D3DCLEAR_TARGET, D3DCOLOR_XRGB(0, 0, 0), 1.0f, 0);
 
-	d3ddev->BeginScene();    // begins the 3D scene
+	d3ddev->BeginScene();    
 
 }
 
@@ -173,6 +171,7 @@ void Direct3dRenderer::renderObject(StaticBox *box)
 	rct.left=0;
 	rct.right=box->getWidth();	    
 
+	// Translate it to the desired origin
 	D3DXVECTOR3 pos(box->getOrigin().x,box->getOrigin().y,0);
 
 	gSprite->Begin(D3DXSPRITE_ALPHABLEND);		
@@ -180,11 +179,14 @@ void Direct3dRenderer::renderObject(StaticBox *box)
 	rct.top=0;
 	rct.bottom=box->getHeight();
 
+	// Add the empty texture, this is needed to color it directly without the need
+	// for having textures for every color
 	d3ddev->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_ADD );
 	d3ddev->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
 	d3ddev->SetTextureStageState( 0, D3DTSS_COLORARG2, D3DTA_DIFFUSE );		
 
-	gSprite->Draw(gTexture, &rct, NULL,&pos,D3DCOLOR_COLORVALUE(box->getColor().getR(),box->getColor().getG(),box->getColor().getB(),1));
+	gSprite->Draw(gTexture, &rct, NULL,&pos,
+		D3DCOLOR_COLORVALUE(box->getColor().getR(),box->getColor().getG(),box->getColor().getB(),1));
 
 	// Done
 	gSprite->End();
@@ -201,9 +203,11 @@ void Direct3dRenderer::postRender()
 
 void Direct3dRenderer::renderNumber(int number, int x, int y)
 {	
+	// Convert int to wchar_t 
 	wchar_t buffer[10];
 	_itow_s (number, buffer, 10);
 
+	// create a Rect and raw a number on it (similar to Quads from OpenGL)
 	RECT rc;
 	SetRect( &rc, x, y, 0, 0 );
 	g_pFont->DrawText( NULL, buffer, -1, &rc, DT_NOCLIP,
@@ -211,7 +215,9 @@ void Direct3dRenderer::renderNumber(int number, int x, int y)
 }
 
 void Direct3dRenderer::closeWindow()
-{
+{	
+	mRunning = false;
+	PostQuitMessage(0);
 }
 
 double Direct3dRenderer::getTime()
@@ -227,6 +233,7 @@ bool Direct3dRenderer::getRunning()
 int Direct3dRenderer::getKey(int key)
 {
 
+	// translates the KeyInput enum to the Windows input scheme
 	if (msg.message == WM_KEYDOWN)
 	{	
 		int directXKey = 0;

@@ -44,33 +44,43 @@ void OpenGLRenderer::createWindow(int width, int height, char *title)
 
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_BLEND);
-	glfwWindowHint(GLFW_SAMPLES, 4);	// no struttering anymore
+	glfwWindowHint(GLFW_SAMPLES, 4);
 
+	// set the viewport so the coordinate center is not in the center of the screen
+	// but on the upper left corner
 	glViewport(0, 0, width, height);
 	glClear(GL_COLOR_BUFFER_BIT);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();	
 
+	// generate the texture name
 	glGenTextures(1, &score);
 
 }
 
 void OpenGLRenderer::preRender()
 {
+	// clears the bacakground color
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	glMatrixMode(GL_MODELVIEW);
+
+	// replaces the current matrix with the identity matrix
 	glLoadIdentity();
 
+	// activates orthographic 2d render mode
 	glOrtho(0 ,m_Width, m_Height, 0, -1, 1);
 }
 
 void OpenGLRenderer::renderObject(StaticBox* box)
-{		
+{	
+	// Saves both projection and modelview matrices to the matrix stack.
 	glPushMatrix();
 
-	glColor3f(box->getColor().getR(), box->getColor().getG(), box->getColor().getB()); // (0.5, 0, 1) is half red and full blue, giving dark purple.
+	// sets the Color of the StaticBox
+	glColor3f(box->getColor().getR(), box->getColor().getG(), box->getColor().getB()); 
 
+	// actual Render of the box
 	glBegin(GL_QUADS); 
 	glVertex2f(box->getOrigin().x, box->getOrigin().y);
 	glVertex2f(box->getOrigin().x + box->getWidth(), box->getOrigin().y);
@@ -78,12 +88,14 @@ void OpenGLRenderer::renderObject(StaticBox* box)
 	glVertex2f(box->getOrigin().x, box->getOrigin().y + box->getHeight());
 	glEnd( );
 
-	glPopMatrix();
+	// Restores both projection and modelview matrices off the top of the matrix stack
+	glPopMatrix(); 
 }
 
 
 void OpenGLRenderer::postRender()
 {	
+	// Swaps front and back buffer	
 	glfwSwapBuffers(mWindow);
 	glfwPollEvents();
 }
@@ -94,38 +106,51 @@ void OpenGLRenderer::renderNumber(int number, int x, int y)
 
 	glBindTexture(GL_TEXTURE_2D, score);
 
+	// actuall Rendering of the number, gets the desirec number pixel data from images 
+	// created by gimp and exported as raw c image which can be loaded directly.
+
 	switch (number)
 	{		
 	case 1:
-		glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, number_1.width, number_1.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, number_1.pixel_data);
+		glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, number_1.width, number_1.height, 
+			0, GL_RGBA, GL_UNSIGNED_BYTE, number_1.pixel_data);
 		break;
 	case 2:
-		glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, number_2.width, number_2.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, number_2.pixel_data);
+		glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, number_2.width, number_2.height, 
+			0, GL_RGBA, GL_UNSIGNED_BYTE, number_2.pixel_data);
 		break;
 	case 3:
-		glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, number_3.width, number_3.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, number_3.pixel_data);
+		glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, number_3.width, number_3.height, 
+			0, GL_RGBA, GL_UNSIGNED_BYTE, number_3.pixel_data);
 		break;
 	case 4:
-		glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, number_4.width, number_4.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, number_4.pixel_data);
+		glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, number_4.width, number_4.height, 
+			0, GL_RGBA, GL_UNSIGNED_BYTE, number_4.pixel_data);
 		break;
 	case 5:
-		glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, number_5.width, number_5.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, number_5.pixel_data);
+		glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, number_5.width, number_5.height, 
+			0, GL_RGBA, GL_UNSIGNED_BYTE, number_5.pixel_data);
 		break;
 	case 6:
-		glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, number_6.width, number_6.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, number_6.pixel_data);
+		glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, number_6.width, number_6.height, 
+			0, GL_RGBA, GL_UNSIGNED_BYTE, number_6.pixel_data);
 		break;
 	case 7:
-		glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, number_7.width, number_7.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, number_7.pixel_data);
+		glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, number_7.width, number_7.height, 
+			0, GL_RGBA, GL_UNSIGNED_BYTE, number_7.pixel_data);
 		break;
 	case 8:
-		glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, number_8.width, number_8.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, number_8.pixel_data);
+		glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, number_8.width, number_8.height, 
+			0, GL_RGBA, GL_UNSIGNED_BYTE, number_8.pixel_data);
 		break;
 	case 9:
-		glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, number_9.width, number_9.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, number_9.pixel_data);
+		glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, number_9.width, number_9.height, 
+			0, GL_RGBA, GL_UNSIGNED_BYTE, number_9.pixel_data);
 		break;
 	case 0:
 	default:
-		glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, number_0.width, number_0.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, number_0.pixel_data);
+		glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, number_0.width, number_0.height, 
+			0, GL_RGBA, GL_UNSIGNED_BYTE, number_0.pixel_data);
 	}
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -171,6 +196,7 @@ int OpenGLRenderer::getKey(int key)
 {
 	int glfwKey = 0;
 
+	// translates the KeyInput enum to the GLFW input scheme
 	switch (key)
 	{
 	case KeyUp:

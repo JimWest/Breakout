@@ -13,6 +13,7 @@ public:
 	//
 	// @param width The width of the window.	
 	// @param height The height of the window.
+	// @param title The title of the window
 	virtual void createWindow(int width, int height, char *title) {};
 
 	// Handles all stuff that needs to be done before actually render something

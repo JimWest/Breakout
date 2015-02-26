@@ -7,11 +7,14 @@ Breakout::Breakout(IRenderer *renderObject)
 	renderer = renderObject;
 	renderer->createWindow(RES_WIDTH, RES_HEIGHT, "Breakout");
 
+	// create the player
 	player = new DynamicBox(Vector2(PLAYER_X, PLAYER_Y), PLAYER_WIDTH, PLAYER_HEIGHT, Color(0.29f, 0.59f, 0.73f));		
 
+	// create the ball
 	ball = new DynamicBox(Vector2( BALL_X, BALL_Y), BALL_WIDTH, BALL_HEIGHT);
 	ball->setVelocity(Vector2(BALL_velocity_X, BALL_velocity_Y));
 
+	// create all the bricks
 	for ( int n = 0, x = BRICK_PADDING_RIGHT, y = BRICKS_START_Y; n < BRICKS_AMOUNT; n++, x+=BRICK_WIDTH + BRICK_PADDING_RIGHT ) 
 	{
 		if ( x > (RES_WIDTH -  BRICK_WIDTH)) 
@@ -69,6 +72,8 @@ void Breakout::start()
 		// reset player velocity so hes not moving all the time without keypress
 		player->setVelocity(Vector2(0.0f, 0.0f));
 
+
+		// Check KeyInput
 		if (renderer->getKey(KeyR))
 		{
 			resetGame();
@@ -89,6 +94,7 @@ void Breakout::start()
 
 		}
 
+		// Only update the ball etc. when the game has already started
 		if (currentFrame >= countDownEnd)
 		{
 			player->Update(deltaTime);
@@ -100,8 +106,11 @@ void Breakout::start()
 		// All the rendering stuff happens here
 		renderer->preRender();
 
+		// digit 3
 		renderer->renderNumber(score % 1000 / 100 , SCORE_X, SCORE_Y);
+		// digit 2
 		renderer->renderNumber(score % 100 / 10 , SCORE_X + 40 , SCORE_Y);
+		// digit 1
 		renderer->renderNumber(score % 10, SCORE_X + 80, SCORE_Y);
 
 		renderer->renderObject(ball);
@@ -169,6 +178,7 @@ void Breakout::handleBallCollisions()
 
 	Vector2 ballOrigin = ball->getOrigin();
 
+	// check collision for all bricks
 	for ( int n = 0; n < BRICKS_AMOUNT; n++ ) 
 	{
 		if ( bricks[n]->getLife() > 0 ) 
@@ -189,30 +199,40 @@ void Breakout::handleBallCollisions()
 				ball->setVelocity(vel);
 				bricks[n]->decLife();
 				score ++;
+
+				// max Score = 999 (only 3 digits)
+				if (score > 999)
+				{
+					score = 999;
+				}
 				break; 
 			}
 		}
 	}
 
 
+	// Ball collision with the left side of the window
 	if ( ballOrigin.x <= 0 )
 	{
 		Vector2 oldVel = ball->getVelocity();
 		ball->setVelocity(Vector2(oldVel.x * -1, oldVel.y ));
 	}
 
+	// Ball collision with the right side of the window
 	else if ( ballOrigin.x + ball->getWidth() >= RES_WIDTH )
 	{
 		Vector2 oldVel = ball->getVelocity();
 		ball->setVelocity(Vector2(oldVel.x * -1, oldVel.y ));
 	}
 
+	// Ball collision with the top of the window
 	if ( ballOrigin.y <= 0 )
 	{
 		Vector2 oldVel = ball->getVelocity();
 		ball->setVelocity(Vector2(oldVel.x , oldVel.y * -1));
 	}
 
+	// Ball collision with the bottome of the window
 	else if ( ballOrigin.y + ball->getWidth() > RES_HEIGHT ) 
 	{		
 		this->resetGame();
