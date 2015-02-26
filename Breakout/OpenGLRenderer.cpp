@@ -3,7 +3,6 @@
 
 OpenGLRenderer::OpenGLRenderer(void)
 {
-
 }
 
 OpenGLRenderer::~OpenGLRenderer(void)
@@ -88,14 +87,6 @@ void OpenGLRenderer::postRender()
 	glfwSwapBuffers(mWindow);
 	glfwPollEvents();
 }
-
-GLenum GetDataFormat(){
-	return  GL_EXT_bgra;
-}
-GLenum GetDataType(){
-	return  GL_UNSIGNED_BYTE;
-}
-
 
 void OpenGLRenderer::renderNumber(int number, int x, int y)
 {	

@@ -27,7 +27,6 @@ public:
 
 	Vector2 getCenter() const;
 
-	StaticBox(void);
 	StaticBox(Vector2 origin, float width, float height);
 	StaticBox(Vector2 origin, float width, float height, Color c);
 

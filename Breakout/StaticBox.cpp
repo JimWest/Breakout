@@ -32,12 +32,6 @@ void StaticBox::setWidth(float width)
 	this->mWidth = width;
 }
 
-StaticBox::StaticBox(void)
-{
-	this->mHeight = 0;
-	this->mWidth= 0;
-}
-
 Vector2 StaticBox::getCenter() const
 {
 	Vector2 origin = this->getOrigin();

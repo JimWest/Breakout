@@ -6,21 +6,49 @@ private:
 	float r;
 	float g;
 	float b;
-  
-public:	      
-    void setRGB(float r, float g, float b);
 
-    void setR(float r);
-    float getR();
+public:	  
 
-    void setG(float g);
-    float getG();
+	
+	// Returns the value of the red property.
+	//
+	// @return The current red value.	
+	float getR() const;
+	
+	// Sets the value of the red property.
+	//
+	// @param r The new red value.	
+	void setR(float r);
 
-    void setB(float b);
-    float getB();
-    
-	Color(void);
-    Color(float r, float g, float b);
+	// Returns the value of the green property.
+	// 
+	// @return The current green value.	
+	float getG() const;
+
+	// Sets the value of the green property.
+	//
+	// @param g The new green value.	
+	void setG(float g);
+
+	// Returns the value of the blue property.
+	// 
+	// @return The current blue value.	
+	float getB() const;
+
+	// Sets the value of the blue property.
+	//
+	// @param b The new blue value.	
+	void setB(float b);
+
+	// Sets the value of the red, green and blue property.
+	//
+	// @param r The new red value.
+	// @param g The new greeb value.
+	// @param b The new blue value.	
+	void setRGB(float r, float g, float b);
+
+	Color();
+	Color(float r, float g, float b);
 
 };
 

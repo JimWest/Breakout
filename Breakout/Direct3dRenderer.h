@@ -20,8 +20,8 @@ private:
 	bool mRunning;	
 	int m_Width, m_Height;	
 
-	LPDIRECT3D9 d3d;    // the pointer to our Direct3D interface
-	LPDIRECT3DDEVICE9 d3ddev;    // the pointer to the device class
+	LPDIRECT3D9 d3d;				// the pointer to our Direct3D interface
+	LPDIRECT3DDEVICE9 d3ddev;		// the pointer to the device class
 
 	LPD3DXSPRITE gSprite;			// our sprite interfaces
 	LPDIRECT3DTEXTURE9 gTexture;	// our texture
@@ -31,18 +31,44 @@ private:
 	MSG msg;
 
 	std::time_t start;	
-
+	
+	// Set up and initializes Direct3D.
+	// Has to be called after the creation of the window.
 	void initD3D(HWND hWnd);
 
 public:
 	Direct3dRenderer(void);
 	~Direct3dRenderer(void);
 
+	// Creates a new Windows for the Direct3D Rendering.
+	// Will also create and initialize all needed Direct3D objects.
+	//
+	// @param width The width of the window.	
+	// @param height The height of the window.
 	virtual void createWindow(int width, int height);
+
+	// Handles all stuff that needs to be done before actually render something
+	// like clearing the window etc. This needs to be called before rendering 
+	// objects once per frame.
 	virtual void preRender();
-	virtual void renderObject(StaticBox* box);
+
+	// Renders the given StaticBox with its correct color, position, width and height.
+	//
+	// @param *box The box object that should be rendered.
+	virtual void renderObject(StaticBox *box);
+
+	// Handles the Direct3D events that needs to be happen after the rendering.
+	// This needs to be called after rendereing all the objects once per frame.
 	virtual void postRender();
+
+	// Prints the given number 
+	//
+	// @param number The number that should be printed.
+	// @param x The x coordinate where the number should be printed.
+	// @param y The y coordinate where the number should be printed.
 	virtual void renderNumber(int number, int x, int y);
+
+	// Closes the current window.
 	virtual void closeWindow();
 	virtual double getTime();
 	virtual bool getRunning();

@@ -13,11 +13,6 @@ void DynamicBox::setVelocity(Vector2 velocity)
 }
 
 
-DynamicBox::DynamicBox(void):StaticBox()
-{
-}
-
-
 DynamicBox::DynamicBox(Vector2 origin, float width, float height):StaticBox(origin, width, height)
 {
 }

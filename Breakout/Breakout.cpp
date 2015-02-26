@@ -33,11 +33,6 @@ Breakout::Breakout(IRenderer *renderObject)
 		bricks[n] = new Brick(Vector2(x, y), BRICK_WIDTH, BRICK_HEIGHT, brickCol, 1);
 	}
 
-	double currentFrame = renderer->getTime();
-	double lastFrame = currentFrame;
-	double deltaTime;
-	countDownEnd = currentFrame + COUNTDOWN_START;
-
 	score = 0;
 }
 
@@ -70,8 +65,8 @@ void Breakout::start()
 	{	
 
 		currentFrame = renderer->getTime();
-		deltaTime = currentFrame - lastFrame;
-		lastFrame = currentFrame;
+		// deltaTime = currentFrame - lastFrame;
+		// lastFrame = currentFrame;
 
 		deltaTime = 0.02;
 

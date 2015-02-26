@@ -22,9 +22,19 @@ Direct3dRenderer::~Direct3dRenderer(void)
 		gSprite=NULL;
 	}
 
+	if (d3ddev)
+	{
+		d3ddev->Release();    // close and release the 3D device
+		d3ddev=NULL;
+	}
 
-	d3ddev->Release();    // close and release the 3D device
-	d3d->Release();    // close and release Direct3D
+	if (d3d)
+	{
+		d3d->Release();    // close and release Direct3D
+		d3d=NULL;
+	}
+
+
 }
 
 // this is the main message handler for the program
@@ -42,6 +52,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
 	return DefWindowProc (hWnd, message, wParam, lParam);
 }
 
+
 void Direct3dRenderer::initD3D(HWND hWnd)
 {
 	d3d = Direct3DCreate9(D3D_SDK_VERSION);   
@@ -54,7 +65,6 @@ void Direct3dRenderer::initD3D(HWND hWnd)
 	d3dpp.BackBufferFormat=D3DFMT_UNKNOWN;
 	d3dpp.BackBufferCount=1;
 
-
 	// create a device class using this information and the info from the d3dpp stuct
 	d3d->CreateDevice(D3DADAPTER_DEFAULT,
 		D3DDEVTYPE_HAL,
@@ -63,33 +73,36 @@ void Direct3dRenderer::initD3D(HWND hWnd)
 		&d3dpp,
 		&d3ddev);
 
-	// Create our sprite object - only one needed as it is just a set of functions
+	// create our sprite object - only one needed as it is just a set of functions
 	D3DXCreateSprite(d3ddev,&gSprite);
 
+	// create the texture for the sprite, every sprite needs a texture (this one is empty)
+	// gets directly colored in the renderObject function
 	D3DXCreateTexture(d3ddev, 200, 200, 0, 0, D3DFMT_X8R8G8B8, D3DPOOL_MANAGED, &gTexture);
 	D3DXFilterTexture (gTexture, 0, 0, D3DX_DEFAULT); 
 
-    int nHeight = 40;
-    D3DXCreateFont( d3ddev,            // D3D device
-                         nHeight,               // Height
-                         0,                     // Width
-                         FW_BOLD,               // Weight
-                         1,                     // MipLevels, 0 = autogen mipmaps
-                         FALSE,                 // Italic
-                         DEFAULT_CHARSET,       // CharSet
-                         OUT_DEFAULT_PRECIS,    // OutputPrecision
-                         DEFAULT_QUALITY,       // Quality
-                         DEFAULT_PITCH | FF_DONTCARE, // PitchAndFamily
-                         L"Sans",              // pFaceName
-                         &g_pFont );              // ppFont
+	// create the font for text rendering
+	int nHeight = 40;
+	D3DXCreateFont( d3ddev,				// D3D device
+		nHeight,						// Height
+		0,								// Width
+		FW_BOLD,						// Weight
+		1,								// MipLevels, 0 = autogen mipmaps
+		FALSE,							// Italic
+		DEFAULT_CHARSET,				// CharSet
+		OUT_DEFAULT_PRECIS,				// OutputPrecision
+		DEFAULT_QUALITY,				// Quality
+		DEFAULT_PITCH | FF_DONTCARE,	// PitchAndFamily
+		L"Sans",						// pFaceName
+		&g_pFont );						// ppFont
 }
-
 
 void Direct3dRenderer::createWindow(int width, int height)
 {	
 	m_Width = width + 15;
 	m_Height = height + 40;
 
+	// this is needed because the game is started as a console window, not as a Windows Window
 	HINSTANCE pHinst = (HINSTANCE)GetCurrentProcess();
 	WNDCLASSEX wc;
 
@@ -105,7 +118,6 @@ void Direct3dRenderer::createWindow(int width, int height)
 
 	RegisterClassEx(&wc);
 
-	//HWND hWnd;
 	hWnd = CreateWindowEx(NULL,
 		L"WindowClass",
 		L"Our Direct3D Program",
@@ -116,7 +128,7 @@ void Direct3dRenderer::createWindow(int width, int height)
 		NULL,
 		pHinst,
 		NULL);	
-	
+
 	// set up and initialize Direct3D
 	initD3D(hWnd);
 
@@ -146,10 +158,10 @@ void Direct3dRenderer::preRender()
 	d3ddev->Clear(0, NULL, D3DCLEAR_TARGET, D3DCOLOR_XRGB(0, 0, 0), 1.0f, 0);
 
 	d3ddev->BeginScene();    // begins the 3D scene
-	
+
 }
 
-void Direct3dRenderer::renderObject(StaticBox* box)
+void Direct3dRenderer::renderObject(StaticBox *box)
 {	
 	RECT rct;
 	rct.left=0;
@@ -158,14 +170,14 @@ void Direct3dRenderer::renderObject(StaticBox* box)
 	D3DXVECTOR3 pos(box->getOrigin().x,box->getOrigin().y,0);
 
 	gSprite->Begin(D3DXSPRITE_ALPHABLEND);		
-	
+
 	rct.top=0;
 	rct.bottom=box->getHeight();
 
 	d3ddev->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_ADD );
 	d3ddev->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
 	d3ddev->SetTextureStageState( 0, D3DTSS_COLORARG2, D3DTA_DIFFUSE );		
-	
+
 	gSprite->Draw(gTexture, &rct, NULL,&pos,D3DCOLOR_COLORVALUE(box->getColor().getR(),box->getColor().getG(),box->getColor().getB(),1));
 
 	// Done
@@ -176,8 +188,8 @@ void Direct3dRenderer::renderObject(StaticBox* box)
 
 void Direct3dRenderer::postRender()
 {
-	d3ddev->EndScene();    // ends the 3D scene
-	d3ddev->Present(NULL, NULL, NULL, NULL);   // displays the created frame on the screen  
+	d3ddev->EndScene();							// ends the 3D scene
+	d3ddev->Present(NULL, NULL, NULL, NULL);	// displays the created frame on the screen  
 }
 
 
@@ -187,9 +199,9 @@ void Direct3dRenderer::renderNumber(int number, int x, int y)
 	_itow_s (number, buffer, 10);
 
 	RECT rc;
-   SetRect( &rc, x, y, 0, 0 );
-    g_pFont->DrawText( NULL, buffer, -1, &rc, DT_NOCLIP,
-                        D3DXCOLOR( 1.0f, 1.0f, 1.0f, 1.0f ) );
+	SetRect( &rc, x, y, 0, 0 );
+	g_pFont->DrawText( NULL, buffer, -1, &rc, DT_NOCLIP,
+		D3DXCOLOR( 1.0f, 1.0f, 1.0f, 1.0f ) );
 }
 
 void Direct3dRenderer::closeWindow()
@@ -212,7 +224,7 @@ int Direct3dRenderer::getKey(int key)
 	if (msg.message == WM_KEYDOWN)
 	{	
 		int directXKey = 0;
-		 
+
 		switch (key)
 		{
 		case KeyUp:

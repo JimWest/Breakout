@@ -10,13 +10,22 @@ protected:
 	int life;   
 
 public:	
-	void setLife(int life);
-    int getLife();
+	
+	// Returns the current life.
+	//
+	// @return The current life.	
+	int getLife() const;
 
-	Brick(void);
+	// Sets the value of the life property.
+	//
+	// @param life The new life value.
+	
+	void setLife(int life);
+	
 	Brick(Vector2 origin, float width, float height, Color c, int life);
 	~Brick(void);
 
+	// Decreases the current life by one.
     void decLife();
 };
 
