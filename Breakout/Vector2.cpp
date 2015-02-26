@@ -14,10 +14,6 @@ Vector2::Vector2(float x, float y)
 	this->y = y;
 }
 
-Vector2::~Vector2(void)
-{
-}
-
 
 Vector2 &Vector2::operator+(Vector2 summand)
 {
