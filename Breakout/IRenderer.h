@@ -1,6 +1,7 @@
 #pragma once
 #include "StaticBox.h"
 
+// An abstract class for a Renderer API like OpenGL.
 class IRenderer
 {
 public:

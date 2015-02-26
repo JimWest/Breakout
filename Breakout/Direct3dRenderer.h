@@ -70,8 +70,21 @@ public:
 
 	// Closes the current window.
 	virtual void closeWindow();
+
+	// Returns the current time of the renderer.	
+	//
+	// @return The value of the current time.
 	virtual double getTime();
+
+	// Returns if the Renderer is still running or terminated.	
+	//
+	// @return True if the renderer is still running.
 	virtual bool getRunning();
+
+	// Returns the current time of the renderer.	
+	//
+	// @param key The Key-Code of the key (see KeyInput.h)
+	// @return 1 if the key is pressed.
 	virtual int getKey(int key);
 
 };
