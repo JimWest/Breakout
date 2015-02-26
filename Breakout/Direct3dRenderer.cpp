@@ -97,7 +97,7 @@ void Direct3dRenderer::initD3D(HWND hWnd)
 		&g_pFont );						// ppFont
 }
 
-void Direct3dRenderer::createWindow(int width, int height)
+void Direct3dRenderer::createWindow(int width, int height, char *title)
 {	
 	m_Width = width + 15;
 	m_Height = height + 40;
@@ -118,9 +118,13 @@ void Direct3dRenderer::createWindow(int width, int height)
 
 	RegisterClassEx(&wc);
 
+	// Convert char* to LPCWSTR
+	wchar_t* wString=new wchar_t[4096];
+    MultiByteToWideChar(CP_ACP, 0, title, -1, wString, 4096);
+
 	hWnd = CreateWindowEx(NULL,
 		L"WindowClass",
-		L"Our Direct3D Program",
+		wString,
 		WS_OVERLAPPEDWINDOW,
 		0, 0,
 		m_Width, m_Height,
@@ -128,6 +132,8 @@ void Direct3dRenderer::createWindow(int width, int height)
 		NULL,
 		pHinst,
 		NULL);	
+
+	delete wString;
 
 	// set up and initialize Direct3D
 	initD3D(hWnd);

@@ -83,7 +83,7 @@ public:
 	// @param renderer Object to render primitives.
 	Breakout(IRenderer* renderer);
 
-	// Default constructor.
+	// Default deconstructor.
 	~Breakout(void);
 	
 	// Starts the game and its main loop,

@@ -5,7 +5,7 @@
 Breakout::Breakout(IRenderer *renderObject)
 {
 	renderer = renderObject;
-	renderer->createWindow(RES_WIDTH, RES_HEIGHT);
+	renderer->createWindow(RES_WIDTH, RES_HEIGHT, "Breakout");
 
 	player = new DynamicBox(Vector2(PLAYER_X, PLAYER_Y), PLAYER_WIDTH, PLAYER_HEIGHT, Color(0.29f, 0.59f, 0.73f));		
 

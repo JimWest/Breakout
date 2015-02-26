@@ -20,21 +20,24 @@ class OpenGLRenderer :
 {
 
 private:
-	bool mRunning;
-	GLFWwindow* mWindow;
 	int m_Width, m_Height;
-	GLuint score;
+	bool mRunning;
+	GLFWwindow* mWindow;		// the pointer to our GLFW Window	
+	GLuint score;				// the pointer to our score Texture
 
 public:
+	// Default constructor.
 	OpenGLRenderer(void);
+
+	// Default deconstructor.
 	~OpenGLRenderer(void);
 
-	// Creates a new Windows for the OpenGL Rendering.
+	// Creates a new window for the OpenGL Rendering.
 	// Will also create and initialize all needed OpenGL objects.
 	//
 	// @param width The width of the window.	
 	// @param height The height of the window.
-	virtual void createWindow(int width, int height);
+	virtual void createWindow(int width, int height, char *title);
 
 	// Handles all stuff that needs to be done before actually render something
 	// like clearing the window etc. This needs to be called before rendering 

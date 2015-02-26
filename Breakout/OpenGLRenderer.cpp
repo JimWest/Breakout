@@ -17,19 +17,19 @@ static void error_callback(int error, const char* description)
 }
 
 
-void OpenGLRenderer::createWindow(int width, int height)
+void OpenGLRenderer::createWindow(int width, int height, char *title)
 {
 	m_Width = width;
 	m_Height = height;
-	/* Initialize the library */
+
+	// Initialize the glfw library
 	glfwInit();  
 	glfwSetErrorCallback(error_callback);
 
-
 	mRunning = true;
 
-	/* Create a windowed mode window and its OpenGL context */
-	mWindow = glfwCreateWindow(width, height, "Breakout", NULL, NULL);
+	// Create a windowed mode window and its OpenGL context
+	mWindow = glfwCreateWindow(width, height, title, NULL, NULL);
 
 	if (!mWindow)
 	{

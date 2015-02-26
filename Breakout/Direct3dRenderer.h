@@ -38,15 +38,18 @@ private:
 	void initD3D(HWND hWnd);
 
 public:
+	// Default constructor.
 	Direct3dRenderer(void);
+
+	// Default deconstructor.
 	~Direct3dRenderer(void);
 
-	// Creates a new Windows for the Direct3D Rendering.
+	// Creates a new window for the Direct3D Rendering.
 	// Will also create and initialize all needed Direct3D objects.
 	//
 	// @param width The width of the window.	
 	// @param height The height of the window.
-	virtual void createWindow(int width, int height);
+	virtual void createWindow(int width, int height, char *title);
 
 	// Handles all stuff that needs to be done before actually render something
 	// like clearing the window etc. This needs to be called before rendering 
