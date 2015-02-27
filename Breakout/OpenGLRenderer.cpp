@@ -14,6 +14,7 @@ OpenGLRenderer::~OpenGLRenderer(void)
 
 static void error_callback(int error, const char* description)
 {
+	// writes the error into the output stream
 	fputs(description, stderr);
 }
 
@@ -40,23 +41,21 @@ void OpenGLRenderer::createWindow(int width, int height, char *title)
 		exit(EXIT_FAILURE);
 	}	
 
+	// make the mWindow to the current context (keyboard input etc)
 	glfwMakeContextCurrent(mWindow);
 
+	// size of the frame buffer of the mWindow
 	float ratio;
 	glfwGetFramebufferSize(mWindow, &width, &height);
 	ratio = width / (float) height;
 
-	glEnable(GL_TEXTURE_2D);
-	glEnable(GL_BLEND);
+	// activates mutlisampling, looks better with
 	glfwWindowHint(GLFW_SAMPLES, 4);
 
 	// set the viewport so the coordinate center is not in the center of the screen
 	// but on the upper left corner
 	glViewport(0, 0, width, height);
-	glClear(GL_COLOR_BUFFER_BIT);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();	
-
+	
 	// generate the texture name
 	glGenTextures(1, &score);
 
@@ -67,12 +66,14 @@ void OpenGLRenderer::preRender()
 	// clears the bacakground color
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	glMatrixMode(GL_MODELVIEW);
+	// specifieswhich matrix is the current matrix
+	// GJ_PROJECTION: Applies subsequent matrix operations to the projection stack
+	glMatrixMode(GL_PROJECTION);
 
 	// replaces the current matrix with the identity matrix
 	glLoadIdentity();
 
-	// activates orthographic 2d render mode
+	// activates orthographic 2d render mode with origin top left
 	glOrtho(0 ,m_Width, m_Height, 0, -1, 1);
 }
 
@@ -108,10 +109,14 @@ void OpenGLRenderer::renderNumber(int number, int x, int y)
 {	
 	glPushMatrix();
 
+	glEnable(GL_TEXTURE_2D);
+
+	// binds named textgure to target
 	glBindTexture(GL_TEXTURE_2D, score);
 
 	// actuall Rendering of the number, gets the desirec number pixel data from images 
 	// created by gimp and exported as raw c image which can be loaded directly.
+	// defines the picture of the texture
 
 	switch (number)
 	{		
@@ -157,22 +162,24 @@ void OpenGLRenderer::renderNumber(int number, int x, int y)
 			0, GL_RGBA, GL_UNSIGNED_BYTE, number_0.pixel_data);
 	}
 
+	// actually sets the texture on the quad
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
-	glEnable(GL_TEXTURE_2D);
-
+	// translate and scale it, otherwise it would be tiny and at 0,0 (invisible)
 	glTranslatef(x, y, 1);
 	glScalef(30, 40, 1);
-
-
+	
+	// make it white, otherwise it would have the color of the last StaticBox (yellow)
 	glColor3f(1,1,1);
+
+	// Actual rendering of the quad and the texture on it
 	glBegin(GL_QUADS);
-	glNormal3f(0.0, 0.0, 1.0);
-	glTexCoord2d(0, 0); glVertex2d(0.0, 0.0);
-	glTexCoord2d(0, 1); glVertex2d(0.0, 1.0);
-	glTexCoord2d(1, 1); glVertex2d(1.0, 1.0);
-	glTexCoord2d(1, 0); glVertex2d(1.0, 0.0);
+		glNormal3f(0.0, 0.0, 1.0);
+		glTexCoord2d(0, 0); glVertex2d(0.0, 0.0);
+		glTexCoord2d(0, 1); glVertex2d(0.0, 1.0);
+		glTexCoord2d(1, 1); glVertex2d(1.0, 1.0);
+		glTexCoord2d(1, 0); glVertex2d(1.0, 0.0);
 	glEnd();
 
 	glDisable(GL_TEXTURE_2D);

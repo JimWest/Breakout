@@ -53,6 +53,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
 
 void Direct3dRenderer::initD3D(HWND hWnd)
 {
+	// creates the direct 3d interface
 	d3d = Direct3DCreate9(D3D_SDK_VERSION);   
 	D3DPRESENT_PARAMETERS d3dpp;   
 
@@ -121,6 +122,7 @@ void Direct3dRenderer::createWindow(int width, int height, char *title)
 	wchar_t* wString=new wchar_t[4096];
 	MultiByteToWideChar(CP_ACP, 0, title, -1, wString, 4096);
 
+	// create a new Window with windows functions (not Direct x specific)
 	hWnd = CreateWindowEx(NULL,
 		L"WindowClass",
 		wString,
@@ -175,17 +177,17 @@ void Direct3dRenderer::renderObject(StaticBox *box)
 
 	gSprite->Begin(D3DXSPRITE_ALPHABLEND);		
 
-	rct.top=0;
-	rct.bottom=box->getHeight();
+		rct.top=0;
+		rct.bottom=box->getHeight();
 
-	// Add the empty texture, this is needed to color it directly without the need
-	// for having textures for every color
-	d3ddev->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_ADD );
-	d3ddev->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
-	d3ddev->SetTextureStageState( 0, D3DTSS_COLORARG2, D3DTA_DIFFUSE );		
+		// Add the empty texture, this is needed to color it directly without the need
+		// for having textures for every color
+		d3ddev->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_ADD );
+		d3ddev->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
+		d3ddev->SetTextureStageState( 0, D3DTSS_COLORARG2, D3DTA_DIFFUSE );		
 
-	gSprite->Draw(gTexture, &rct, NULL,&pos,
-		D3DCOLOR_COLORVALUE(box->getColor().getR(),box->getColor().getG(),box->getColor().getB(),1));
+		gSprite->Draw(gTexture, &rct, NULL,&pos,
+			D3DCOLOR_COLORVALUE(box->getColor().getR(),box->getColor().getG(),box->getColor().getB(),1));
 
 	// Done
 	gSprite->End();
@@ -195,8 +197,11 @@ void Direct3dRenderer::renderObject(StaticBox *box)
 
 void Direct3dRenderer::postRender()
 {
-	d3ddev->EndScene();							// ends the 3D scene
-	d3ddev->Present(NULL, NULL, NULL, NULL);	// displays the created frame on the screen  
+	// ends the 3D scene
+	d3ddev->EndScene();							
+
+	// displays the created frame on the screen  
+	d3ddev->Present(NULL, NULL, NULL, NULL);	
 }
 
 
